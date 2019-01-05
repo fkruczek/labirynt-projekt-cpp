@@ -13,20 +13,17 @@ FileReader::~FileReader()
 
 bool FileReader::readFromFile()
 {
-	char line;
-	fstream myfile("maze.txt");
-	if (myfile.is_open())
-	{
-		myfile >> line;
-		cout << line << '\n';
-		myfile.close();
+	std::ifstream file(fileName);
+	if (file.good()) {
+		fileContent.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
+		return true;
 	}
-
-	else cout << "Unable to open file";
-	return true;
+	else return false;
 }
 
-const char * FileReader::getStringFromFile()
+std::string FileReader::getFileContent()
 {
-	return nullptr;
+	return fileContent;
 }
+
+

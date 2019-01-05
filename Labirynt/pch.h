@@ -9,9 +9,11 @@
 #ifndef PCH_H
 #define PCH_H
 #include <iostream>
+#include <string>
 #include "PathFinder.h"
 #include "FileReader.h"
 #include "Grid.h"
+
 // TODO: add headers that you want to pre-compile here
 
 #endif //PCH_H
