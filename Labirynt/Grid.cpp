@@ -63,13 +63,15 @@ void Grid::createGrid(std::string fileContent)
 		if (isalnum(fileContent[i]))
 			fileContentN += fileContent[i];
 	}
-	std::cout << fileContentN << std::endl;
+
 	//utworzenie labiryntu
 	for (int row = 0, i = 0; row < gridSize; row++) {
 		for (int col = 0; col < gridSize; col++) {
 			grid[row][col] = fileContentN[i++];
 		}
 	}
+
+	//wyswietlenie labiryntu (TEMPORARY)
 	for (int row = 0; row < gridSize; row++) {
 		for (int col = 0; col < gridSize; col++) {
 			std::cout << grid[row][col] << " ";
@@ -80,11 +82,12 @@ void Grid::createGrid(std::string fileContent)
 
 char Grid::getField(int x, int y)
 {
-	return 0;
+	return grid[x][y];
 }
 
 void Grid::setField(int x, int y, char fieldType)
 {
+	grid[x][y] = fieldType;
 }
 
 int Grid::getSize()
@@ -94,10 +97,20 @@ int Grid::getSize()
 
 int Grid::getStartingPointX()
 {
-	return 0;
+	for (int row = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			if (grid[row][col] == 'S');
+			return row;
+		}
+	}
 }
 
 int Grid::getStartingPointY()
 {
-	return 0;
+	for (int row = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			if (grid[row][col] == 'S');
+			return col;
+		}
+	}
 }

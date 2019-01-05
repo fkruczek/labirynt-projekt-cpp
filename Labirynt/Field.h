@@ -1,14 +1,14 @@
-#pragma once
-class Path
+class Field
 {
 private:
-	int x;
-	int y;
-	char fieldType;
+	int X;
+	int Y;
 public:
-	Path();
-	~Path();
-
-	//zwraca i-te pole sciezki
+	Field();
+	~Field();
+	void setX(int x);
+	void setY(int y);
+	int getX();
+	int getY();
 };
 
