@@ -32,24 +32,25 @@ Grid::Grid(int size) //labirynt losowany
 
 Grid::Grid(std::string fileContent) //labirynt z pliku
 {
-	//ustawienie rozmiaru labiryntu (trzeba bedize to zrobicc gdzies indziej)
-	this->setSize(fileContent);
+		validate(fileContent);
 
-	allocGrid(gridSize);
+		setSize(fileContent);
 
-	//usuniecie znakow bialych z fileContent
-	std::string fileContentN;
-	for (size_t i = 0; i < fileContent.size(); i++) {
-		if (isalnum(fileContent[i]))
-			fileContentN += fileContent[i];
-	}
+		allocGrid(gridSize);
 
-	//string -> grid
-	for (int row = 0, i = 0; row < gridSize; row++) {
-		for (int col = 0; col < gridSize; col++) {
-			grid[row][col] = fileContentN[i++];
+		//usuniecie znakow bialych z fileContent
+		std::string fileContentN;
+		for (size_t i = 0; i < fileContent.size(); i++) {
+			if (isalnum(fileContent[i]))
+				fileContentN += fileContent[i];
 		}
-	}
+
+		//string -> grid
+		for (int row = 0, i = 0; row < gridSize; row++) {
+			for (int col = 0; col < gridSize; col++) {
+				grid[row][col] = fileContentN[i++];
+			}
+		}
 }
 
 Grid::~Grid()
@@ -85,37 +86,28 @@ int Grid::randomizeSize()
 }
 
 
-
-bool Grid::isValid(std::string fileContent)
+void Grid::validate(std::string fileContent)
 {
-	//Ÿle
-	bool isCorrect = true;
-	const char *content = fileContent.c_str();
-	int len = fileContent.size();
-	int lineSize = 0;
-	int newLineCount = 1;
+	if (true)
+	{
+		//Ÿle
+		//bool isCorrect = true;
+		//const char *content = fileContent.c_str();
+		//int len = fileContent.size();
 
-	for (int i = 0; content[i] != '\n'; i++) {
-		lineSize++;
+		//fileContent.erase('\n');
+		//sprawdzanie poprawnosci
+		//koncepcje:
+		//czy labirynt jest wiekszy ni¿ 2X2 i mniejszy ni¿ ?X?
+		//czy pierwsza linia ma tyle znaków co jest linii
+		//trzeba wzi¹æ pod uwagê nawstawianie na koncu enterów (lub napocz¹tku lub gdziekolwiek)
+		//czy jest tylko jedno wejscie i jedno wyjscie
+		//czy oprócz wejscia i wyjscia sa tylko sciany i pola przechodnie
+
+		throw "BLAD BLAD";
 	}
 
-	for (int i = 0; i < len; i++) {
-		if (content[i] == '\n') newLineCount++;
-	}
-
-	//fileContent.erase('\n');
-
-	std::cout << fileContent;
-	//sprawdzanie poprawnosci
-	//koncepcje:
-	//czy labirynt jest wiekszy ni¿ 2X2 i mniejszy ni¿ ?X?
-	//czy pierwsza linia ma tyle znaków co jest linii
-	//trzeba wzi¹æ pod uwagê nawstawianie na koncu enterów (lub napocz¹tku lub gdziekolwiek)
-	//czy jest tylko jedno wejscie i jedno wyjscie
-	//czy oprócz wejscia i wyjscia sa tylko sciany i pola przechodnie
-	return isCorrect;
 }
-
 
 char Grid::getField(int x, int y)
 {

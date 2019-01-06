@@ -18,7 +18,7 @@ public:
 	void setSize(int size);
 	void allocGrid(int size);
 	int randomizeSize();
-	bool isValid(std::string fileContent);
+	void validate(std::string fileContent);
 	char getField(int x, int y);
 	void setField(int x, int y, char fieldType);
 	int getSize();
