@@ -26,6 +26,8 @@ void View::setWindowSize(int sizeWindow)
 	windowSize = sizeWindow;
 }
 
+
+
 void View::drawMaze(Grid & Maze)
 {
 	ALLEGRO_DISPLAY *display = al_create_display(windowSize, windowSize);
@@ -74,20 +76,37 @@ int View::mainMenu()
 	std::cout << "Autor: Fryderyk Kruczek" << std::endl;
 
 	std::cout << "MENU:" << std::endl;
-	std::cout << "1. Losuj labirynt" << std::endl;
-	std::cout << "2. Pobierz labirynt z pliku 'maze.txt' " << std::endl;
+	std::cout << "1. Pobierz labirynt z pliku 'maze.txt' " << std::endl;
+	std::cout << "2. Losuj labirynt" << std::endl;
 	std::cout << "WYBOR: ";
 
-	char wybor;
+	char choice;
 	do {
-		fflush(stdin);
-		std::cin >> wybor;
-	} while (wybor != '1' && wybor != '2');
+		std::cin >> choice;
+	} while (choice != '1' && choice != '2');
 
-	if (wybor == '1') {
+	if (choice == '1') {
 		return 1;
 	}
 	else {
-		return 2;
+		std::cout << "Podaj rozmiar labiryntu (od 2 do 150): " << std::endl;
+
+		int size;
+		do {
+			size = readSize();
+		} while (size < 2 || size > 150);
+
+		return size;
 	}
+}
+
+int View::readSize()
+{
+	int size;
+	while (!(std::cin >> size)) {
+		std::cin.clear();
+		while (std::cin.get() != '\n')
+			continue;
+	}
+	return size;
 }

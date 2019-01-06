@@ -12,6 +12,7 @@ public:
 	~View();
 	void setMazeSize(int gridSize);
 	void setWindowSize(int sizeWindow);
+	int readSize();
 	void drawMaze(Grid & Maze);
 	int mainMenu();
 };

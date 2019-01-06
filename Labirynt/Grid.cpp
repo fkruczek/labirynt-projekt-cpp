@@ -2,12 +2,10 @@
 #include "Grid.h"
 
 
-Grid::Grid()
+Grid::Grid(int size)
 {
-	//	this->randomizeSize();
-	setSize(50);
+	setSize(size);
 	allocGrid(gridSize);
-
 	int randnum1, randnum2, randnum3, randnum4;
 
 	for (int row = 0; row < gridSize; row++) {

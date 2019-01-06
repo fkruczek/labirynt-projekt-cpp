@@ -3,20 +3,19 @@
 
 int main(int argc, char **argv) {
 	int wybor;
-	View widok;
-	wybor = widok.mainMenu();
+	View Widok;
+	wybor = Widok.mainMenu();
 	
-	if (wybor == 1) {
-		//losowanie labiryntu
-		Grid Labirynt;
-		widok.drawMaze(Labirynt);
-	}
-	else {
-		//labirynt z pliku
+	if (wybor == 1) {//labirynt z pliku
+
 		FileReader Czytnik;
 		Czytnik.readFromFile();
 		Grid Labirynt(Czytnik.getFileContent());
-		widok.drawMaze(Labirynt);
+		Widok.drawMaze(Labirynt);
+	}
+	else {//losowanie labiryntu
+		Grid Labirynt(wybor);
+		Widok.drawMaze(Labirynt);
 	}
 	return 0;
 }

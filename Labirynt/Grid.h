@@ -8,7 +8,7 @@ private:
 	int gridSize;
 	char **grid;
 public:
-	Grid(); //random grid
+	Grid(int size); //random grid
 	Grid(std::string fileContent); //grid from file
 	~Grid();
 	void setSize(std::string fileContent);
