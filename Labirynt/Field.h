@@ -1,10 +1,13 @@
+#ifndef FIELD_H
+#define FIELD_H
+
 class Field
 {
 private:
 	int X;
 	int Y;
 public:
-	Field();
+	Field(int x, int y);
 	~Field();
 	void setX(int x);
 	void setY(int y);
@@ -12,3 +15,4 @@ public:
 	int getY();
 };
 
+#endif

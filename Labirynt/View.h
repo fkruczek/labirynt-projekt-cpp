@@ -1,5 +1,7 @@
 #pragma once
-#include "allegro5/bitmap_draw.h"
+#ifndef VIEW_H
+#define VIEW_H
+
 #include "allegro5/allegro.h"
 #include "allegro5/allegro_primitives.h"
 class View
@@ -17,3 +19,4 @@ public:
 	int mainMenu();
 };
 
+#endif

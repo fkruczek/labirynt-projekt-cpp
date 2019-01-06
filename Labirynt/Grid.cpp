@@ -2,7 +2,7 @@
 #include "Grid.h"
 
 
-Grid::Grid(int size)
+Grid::Grid(int size) //labirynt losowany
 {
 	setSize(size);
 	allocGrid(gridSize);
@@ -30,7 +30,7 @@ Grid::Grid(int size)
 
 }
 
-Grid::Grid(std::string fileContent)
+Grid::Grid(std::string fileContent) //labirynt z pliku
 {
 	//ustawienie rozmiaru labiryntu (trzeba bedize to zrobicc gdzies indziej)
 	this->setSize(fileContent);

@@ -1,4 +1,7 @@
 #pragma once
+#ifndef GRID_H
+#define GRID_H
+
 #include <cctype>
 #define MIN_MAZE_SIZE 2;
 #define MAX_MAZE_SIZE 180;
@@ -22,3 +25,4 @@ public:
 	int getStartingPointX();
 	int getStartingPointY();
 };
+#endif
