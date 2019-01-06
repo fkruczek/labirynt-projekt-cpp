@@ -103,6 +103,7 @@ int Grid::getStartingPointX()
 			return row;
 		}
 	}
+	return 0;
 }
 
 int Grid::getStartingPointY()
@@ -113,4 +114,5 @@ int Grid::getStartingPointY()
 			return col;
 		}
 	}
+	return 0;
 }
