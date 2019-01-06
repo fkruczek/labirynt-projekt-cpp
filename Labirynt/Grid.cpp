@@ -10,8 +10,8 @@ Grid::Grid(int size) //labirynt losowany
 
 	for (int row = 0; row < gridSize; row++) {
 		for (int col = 0; col < gridSize; col++) {
-			randnum1 = rand() % 2;
-			if (randnum1) grid[row][col] = '0';
+			randnum1 = rand() % 100;
+			if (randnum1<35) grid[row][col] = '0';
 			else grid[row][col] = '1';
 		}
 	}
@@ -19,13 +19,13 @@ Grid::Grid(int size) //labirynt losowany
 	randnum1 = rand() % gridSize;
 	randnum2 = rand() % gridSize;
 
-	grid[randnum1][randnum2] = 'S';
+	grid[randnum1][randnum2] = 'S'; //wejscie do labiryntu
 	do {
 		randnum3 = rand() % gridSize;
 		randnum4 = rand() % gridSize;
-	} while (randnum3 != randnum1 || randnum4 != randnum1);
+	} while (randnum3 == randnum1 && randnum4 == randnum1);
 
-	grid[randnum3][randnum4] = 'K';
+	grid[randnum3][randnum4] = 'K'; //wyjscie z labiryntu
 
 
 }
@@ -88,7 +88,7 @@ int Grid::randomizeSize()
 
 void Grid::validate(std::string fileContent)
 {
-	if (true)
+	if (false)
 	{
 		//Ÿle
 		//bool isCorrect = true;
@@ -104,7 +104,7 @@ void Grid::validate(std::string fileContent)
 		//czy jest tylko jedno wejscie i jedno wyjscie
 		//czy oprócz wejscia i wyjscia sa tylko sciany i pola przechodnie
 
-		throw "BLAD BLAD";
+		throw "!ERROR! !ERROR! !ERROR!";
 	}
 
 }

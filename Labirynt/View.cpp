@@ -4,16 +4,13 @@
 
 View::View()
 {
-	al_init();
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
-	al_get_allegro_primitives_version();
-	al_init_primitives_addon();
+
 }
 
 
 View::~View()
 {
-	al_shutdown_primitives_addon();
+
 }
 
 void View::setMazeSize(int gridSize)
@@ -30,7 +27,25 @@ void View::setWindowSize(int sizeWindow)
 
 void View::drawMaze(Grid & Maze)
 {
-	ALLEGRO_DISPLAY *display = al_create_display(windowSize, windowSize);
+	al_set_new_display_flags(ALLEGRO_WINDOWED);
+	al_init_primitives_addon();
+
+	if (!al_init()) {
+		throw "nie udalo sie zainicjalizowac allegro";
+	}
+
+	display = al_create_display(windowSize, windowSize);
+	if (!display) {
+		throw "nie udalo sie utworzyc display";
+	}
+
+	event_queue = al_create_event_queue();
+	if (!event_queue) {
+		al_destroy_display(display);
+		throw "nie udalo sie utworzyc event_queue";
+	}
+
+	al_set_window_title(display, "Labirynt - projekt C++");
 
 	ALLEGRO_COLOR color_wall = al_map_rgb(0, 42, 63);
 	ALLEGRO_COLOR color_ground = al_map_rgb(76, 98, 120);
@@ -63,11 +78,19 @@ void View::drawMaze(Grid & Maze)
 		}
 	}
 
-
 	al_flip_display();
-	al_rest(6.0f);
-	al_destroy_display(display);
+	while (1)
+	{
+		ALLEGRO_EVENT ev;
+		al_wait_for_event(event_queue, &ev);
+		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			break;
+		}
 
+	}
+	al_destroy_display(display);
+	al_destroy_event_queue(event_queue);
+	al_shutdown_primitives_addon();
 }
 
 int View::mainMenu()
@@ -84,7 +107,6 @@ int View::mainMenu()
 	do {
 		std::cin >> choice;
 	} while (choice != '1' && choice != '2');
-
 	if (choice == '1') {
 		return 1;
 	}
@@ -103,6 +125,8 @@ int View::mainMenu()
 int View::readSize()
 {
 	int size;
+	std::cin.clear();
+	std::cin.ignore(std::numeric_limits < std::streamsize >::max(), '\n');
 	while (!(std::cin >> size)) {
 		std::cin.clear();
 		while (std::cin.get() != '\n')

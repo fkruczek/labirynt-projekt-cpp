@@ -3,8 +3,8 @@
 
 int main(int argc, char **argv) {
 	int wybor;
-	View Widok;
 
+	View Widok;
 	wybor = Widok.mainMenu();
 	
 	if (wybor == 1) {//labirynt z pliku
