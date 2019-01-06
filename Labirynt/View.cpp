@@ -2,17 +2,12 @@
 #include "View.h"
 
 
-View::View(int gridSize)
+View::View()
 {
-	mazeSize = gridSize;
-
-
 	al_init();
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
 	al_get_allegro_primitives_version();
 	al_init_primitives_addon();
-
-
 }
 
 
@@ -41,6 +36,7 @@ void View::drawMaze(Grid & Maze)
 	ALLEGRO_COLOR color_enter = al_map_rgb(200, 10, 10);
 	ALLEGRO_COLOR color_exit = al_map_rgb(100, 100, 10);
 
+	setMazeSize(Maze.getSize());
 	int sizeOfSquare = windowSize / mazeSize;
 
 	for (int row = 0; row < mazeSize; row++) {
@@ -70,4 +66,28 @@ void View::drawMaze(Grid & Maze)
 	al_rest(6.0f);
 	al_destroy_display(display);
 
+}
+
+int View::mainMenu()
+{
+	std::cout << "Program LABIRYNT" << std::endl;
+	std::cout << "Autor: Fryderyk Kruczek" << std::endl;
+
+	std::cout << "MENU:" << std::endl;
+	std::cout << "1. Losuj labirynt" << std::endl;
+	std::cout << "2. Pobierz labirynt z pliku 'maze.txt' " << std::endl;
+	std::cout << "WYBOR: ";
+
+	char wybor;
+	do {
+		fflush(stdin);
+		std::cin >> wybor;
+	} while (wybor != '1' && wybor != '2');
+
+	if (wybor == '1') {
+		return 1;
+	}
+	else {
+		return 2;
+	}
 }

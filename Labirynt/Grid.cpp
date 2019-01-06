@@ -4,8 +4,55 @@
 
 Grid::Grid()
 {
+	//	this->randomizeSize();
+	setSize(50);
+	allocGrid(gridSize);
+
+	int randnum1, randnum2, randnum3, randnum4;
+
+	for (int row = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			randnum1 = rand() % 2;
+			if (randnum1) grid[row][col] = '0';
+			else grid[row][col] = '1';
+		}
+	}
+
+	randnum1 = rand() % gridSize;
+	randnum2 = rand() % gridSize;
+
+	grid[randnum1][randnum2] = 'S';
+	do {
+		randnum3 = rand() % gridSize;
+		randnum4 = rand() % gridSize;
+	} while (randnum3 != randnum1 || randnum4 != randnum1);
+
+	grid[randnum3][randnum4] = 'K';
+
+
 }
 
+Grid::Grid(std::string fileContent)
+{
+	//ustawienie rozmiaru labiryntu (trzeba bedize to zrobicc gdzies indziej)
+	this->setSize(fileContent);
+
+	allocGrid(gridSize);
+
+	//usuniecie znakow bialych z fileContent
+	std::string fileContentN;
+	for (size_t i = 0; i < fileContent.size(); i++) {
+		if (isalnum(fileContent[i]))
+			fileContentN += fileContent[i];
+	}
+
+	//string -> grid
+	for (int row = 0, i = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			grid[row][col] = fileContentN[i++];
+		}
+	}
+}
 
 Grid::~Grid()
 {
@@ -20,6 +67,26 @@ void Grid::setSize(std::string fileContent)
 		gridSize = fileContent.substr(0, fileContent.find_first_of('\n')).length(); //czyli dlugosc pierwszej linii
 	else gridSize = 0;
 }
+
+void Grid::setSize(int size)
+{
+	gridSize = size;
+}
+
+void Grid::allocGrid(int size)
+{
+	grid = new char*[size];
+	for (int i = 0; i < size; ++i)
+		grid[i] = new char[size];
+}
+
+int Grid::randomizeSize()
+{
+	gridSize = rand() % 150 + 2;
+	return gridSize;
+}
+
+
 
 bool Grid::isValid(std::string fileContent)
 {
@@ -51,37 +118,6 @@ bool Grid::isValid(std::string fileContent)
 	return isCorrect;
 }
 
-void Grid::createGrid(std::string fileContent)
-{
-	//ustawienie rozmiaru labiryntu (trzeba bedize to zrobicc gdzies indziej)
-	this->setSize(fileContent);
-	//alokacja pamieci na labirynt 
-	grid = new char*[gridSize];
-	for (int i = 0; i < gridSize; ++i)
-		grid[i] = new char[gridSize];
-
-	//usuniecie znakow bialych z fileContent
-	std::string fileContentN;
-	for (size_t i = 0; i < fileContent.size(); i++) {
-		if (isalnum(fileContent[i]))
-			fileContentN += fileContent[i];
-	}
-
-	//utworzenie labiryntu
-	for (int row = 0, i = 0; row < gridSize; row++) {
-		for (int col = 0; col < gridSize; col++) {
-			grid[row][col] = fileContentN[i++];
-		}
-	}
-
-	//wyswietlenie labiryntu (TEMPORARY)
-	for (int row = 0; row < gridSize; row++) {
-		for (int col = 0; col < gridSize; col++) {
-			std::cout << grid[row][col] << " ";
-		}
-		std::cout << std::endl;
-	}
-}
 
 char Grid::getField(int x, int y)
 {
@@ -102,8 +138,8 @@ int Grid::getStartingPointX()
 {
 	for (int row = 0; row < gridSize; row++) {
 		for (int col = 0; col < gridSize; col++) {
-			if (grid[row][col] == 'S');
-			return row;
+			if (grid[row][col] == 'S')
+				return row;
 		}
 	}
 	return 0;
@@ -113,8 +149,8 @@ int Grid::getStartingPointY()
 {
 	for (int row = 0; row < gridSize; row++) {
 		for (int col = 0; col < gridSize; col++) {
-			if (grid[row][col] == 'S');
-			return col;
+			if (grid[row][col] == 'S')
+				return col;
 		}
 	}
 	return 0;

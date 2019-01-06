@@ -8,11 +8,14 @@ private:
 	int gridSize;
 	char **grid;
 public:
-	Grid();
+	Grid(); //random grid
+	Grid(std::string fileContent); //grid from file
 	~Grid();
 	void setSize(std::string fileContent);
+	void setSize(int size);
+	void allocGrid(int size);
+	int randomizeSize();
 	bool isValid(std::string fileContent);
-	void createGrid(std::string fileContent);
 	char getField(int x, int y);
 	void setField(int x, int y, char fieldType);
 	int getSize();
