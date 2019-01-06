@@ -1,6 +1,5 @@
-111111
-eeeeee
-ffffff
-rrrrrr
-wewwww
-455454
+S0101
+10111
+00220
+11011
+0000K

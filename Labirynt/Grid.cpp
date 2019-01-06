@@ -9,6 +9,9 @@ Grid::Grid()
 
 Grid::~Grid()
 {
+	for (int i = 0; i < gridSize; ++i)
+		delete[] grid[i];
+	delete[] grid;
 }
 
 void Grid::setSize(std::string fileContent)

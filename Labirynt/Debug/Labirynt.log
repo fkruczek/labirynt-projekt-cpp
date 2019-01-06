@@ -1,4 +1,4 @@
-﻿  Grid.cpp
-c:\users\fryderyk\projects\labirynt\labirynt\grid.cpp(102): warning C4390: ';': empty controlled statement found; is this the intent?
-c:\users\fryderyk\projects\labirynt\labirynt\grid.cpp(113): warning C4390: ';': empty controlled statement found; is this the intent?
+﻿  Labirynt.cpp
+  View.cpp
+  Generating Code...
   Labirynt.vcxproj -> C:\Users\Fryderyk\Projects\labirynt\Labirynt\Debug\Labirynt.exe
