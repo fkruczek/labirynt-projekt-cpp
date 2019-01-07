@@ -58,7 +58,7 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 	ALLEGRO_COLOR color_exit = al_map_rgb(220, 70, 50);
 
 	setMazeSize(Maze.getSize());
-	int sizeOfSquare = windowSize / mazeSize;
+	int sizeOfSquare = windowSize / (mazeSize);
 	double restTime = 1.0 / mazeSize;
 	for (int nPath = 0; nPath < Finder.getPathCounter(); nPath++) {
 		Finder.selectVectorPath(Maze, nPath);
