@@ -9,6 +9,7 @@ private:
 	bool isVisited = false;
 	bool isWalkable = false;
 public:
+	Field();
 	Field(int x, int y);
 	~Field();
 	void setX(int x);

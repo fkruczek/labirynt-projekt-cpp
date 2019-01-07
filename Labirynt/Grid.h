@@ -3,13 +3,17 @@
 #define GRID_H
 
 #include <cctype>
-#define MIN_MAZE_SIZE 2;
-#define MAX_MAZE_SIZE 180;
+#include "Field.h"
+
+#define MIN_MAZE_SIZE 2
+#define MAX_MAZE_SIZE 150
+
 class Grid
 {
 private:
 	int gridSize;
 	char **grid;
+	bool **visited;
 	std::string fileContentNoWhiteSpaces;
 public:
 	Grid(int size); //random grid
@@ -26,5 +30,11 @@ public:
 	int getSize();
 	int getStartingPointX();
 	int getStartingPointY();
+
+	void setVisited(int x, int y, bool state);
+	bool isVisited(int x, int y);
+
+	bool isWalkable(int x, int y);
+	bool isExitPoint(int x, int y);
 };
 #endif

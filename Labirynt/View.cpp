@@ -116,7 +116,7 @@ int View::mainMenu()
 		int size;
 		do {
 			size = readSize();
-		} while (size < 2 || size > 150);
+		} while (size < MIN_MAZE_SIZE || size > MAX_MAZE_SIZE);
 
 		return size;
 	}

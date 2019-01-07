@@ -1,2 +1,9 @@
-﻿  Grid.cpp
+﻿  pch.cpp
+  Field.cpp
+  FileReader.cpp
+  Grid.cpp
+  Labirynt.cpp
+  PathFinder.cpp
+  View.cpp
+  Generating Code...
   Labirynt.vcxproj -> C:\Users\Fryderyk\Projects\labirynt\Labirynt\Debug\Labirynt.exe

@@ -62,6 +62,10 @@ Grid::~Grid()
 	for (int i = 0; i < gridSize; ++i)
 		delete[] grid[i];
 	delete[] grid;
+
+	for (int i = 0; i < gridSize; ++i)
+		delete[] visited[i];
+	delete[] visited;
 }
 
 void Grid::validate(std::string fileContent)
@@ -92,9 +96,9 @@ void Grid::setSize(std::string fileContent)
 	else 
 		throw "Plik jest pusty";
 
-	if (gridSize < 2)
+	if (gridSize < MIN_MAZE_SIZE)
 		throw "Plik jest bledny";
-	else if (gridSize > 150)
+	else if (gridSize > MAX_MAZE_SIZE)
 		throw "Labirynt jest za duzy";
 }
 
@@ -108,11 +112,19 @@ void Grid::allocGrid(int size)
 	grid = new char*[size];
 	for (int i = 0; i < size; ++i)
 		grid[i] = new char[size];
+
+	visited = new bool*[size];
+	for (int i = 0; i < size; ++i)
+		visited[i] = new bool[size];
+/*
+	grid2 = new Field*[size];
+	for (int i = 0; i < size; ++i)
+		grid2[i] = new Field[size]; */
 }
 
 int Grid::randomizeSize()
 {
-	gridSize = rand() % 150 + 2;
+	gridSize = rand() % MAX_MAZE_SIZE + MIN_MAZE_SIZE;
 	return gridSize;
 }
 
@@ -151,4 +163,28 @@ int Grid::getStartingPointY()
 		}
 	}
 	return 0;
+}
+
+void Grid::setVisited(int x, int y, bool state)
+{
+	visited[x][y] = state;
+}
+
+bool Grid::isVisited(int x, int y)
+{
+	return visited[x][y];
+}
+
+bool Grid::isWalkable(int x, int y)
+{
+	if(grid[x][y] == '1')
+		return true;
+	else return false;
+}
+
+bool Grid::isExitPoint(int x, int y)
+{
+	if (grid[x][y] == 'K')
+		return true;
+	else return false;
 }
