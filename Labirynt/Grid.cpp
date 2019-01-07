@@ -1,6 +1,5 @@
-#include "pch.h"
 #include "Grid.h"
-#include <algorithm>
+
 
 
 Grid::Grid(int size) //labirynt losowany
@@ -114,8 +113,9 @@ void Grid::allocGrid(int size)
 		grid[i] = new char[size];
 
 	visited = new bool*[size];
-	for (int i = 0; i < size; ++i)
+	for (int i = 0; i < size; ++i) {
 		visited[i] = new bool[size];
+	}
 /*
 	grid2 = new Field*[size];
 	for (int i = 0; i < size; ++i)

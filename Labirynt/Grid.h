@@ -1,9 +1,10 @@
 #pragma once
 #ifndef GRID_H
 #define GRID_H
-
 #include <cctype>
-#include "Field.h"
+#include <algorithm>
+
+#include "pch.h"
 
 #define MIN_MAZE_SIZE 2
 #define MAX_MAZE_SIZE 150
@@ -11,10 +12,11 @@
 class Grid
 {
 private:
-	int gridSize;
+	int gridSize = 0;
 	char **grid;
 	bool **visited;
 	std::string fileContentNoWhiteSpaces;
+	friend class Field;
 public:
 	Grid(int size); //random grid
 	Grid(std::string fileContent); //grid from file

@@ -1,2 +1,13 @@
-﻿  View.cpp
-  Labirynt.vcxproj -> C:\Users\Fryderyk\Projects\labirynt\Labirynt\Debug\Labirynt.exe
+﻿  pch.cpp
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(14): error C2065: 'Field': undeclared identifier
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(14): error C2923: 'std::stack': 'Field' is not a valid template type argument for parameter '_Ty'
+c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.16.27023\include\stack(18): error C2903: 'allocator': symbol is neither a class template nor a function template
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(14): error C2903: 'deque': symbol is neither a class template nor a function template
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(14): error C3203: 'deque': unspecialized class template can't be used as a template argument for template parameter '_Container', expected a real type
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(14): error C3203: 'stack': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(16): error C2143: syntax error: missing ';' before '*'
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(16): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(16): error C2238: unexpected token(s) preceding ';'
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(21): error C2061: syntax error: identifier 'Field'
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(23): error C2061: syntax error: identifier 'Field'
+c:\users\fryderyk\projects\labirynt\labirynt\pathfinder.h(24): error C2061: syntax error: identifier 'Field'
