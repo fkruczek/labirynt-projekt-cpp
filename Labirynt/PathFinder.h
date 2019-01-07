@@ -10,7 +10,7 @@
 class PathFinder
 {
 private:
-	bool czyZnaleziono = false;
+	bool isPathExists = false;
 	int mazeSize;
 	int pathCounter = 0;
 	typedef std::queue<std::stack<Field>> queueOfStacks;

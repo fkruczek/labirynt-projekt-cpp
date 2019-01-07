@@ -37,7 +37,7 @@ bool PathFinder::findPath(Grid & maze)
 			!maze.isVisited(nbrN.getX(), nbrN.getY())) {
 			if (maze.isExitPoint(nbrN.getX(), nbrN.getY())) {
 				finalPath = tempPath;
-				czyZnaleziono = true;
+				isPathExists = true;
 
 				duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 
@@ -55,7 +55,7 @@ bool PathFinder::findPath(Grid & maze)
 			!maze.isVisited(nbrS.getX(), nbrS.getY())) {
 			if (maze.isExitPoint(nbrS.getX(), nbrS.getY())) {
 				finalPath = tempPath;
-				czyZnaleziono = true;
+				isPathExists = true;
 
 				duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 
@@ -73,7 +73,7 @@ bool PathFinder::findPath(Grid & maze)
 			!maze.isVisited(nbrE.getX(), nbrE.getY())) {
 			if (maze.isExitPoint(nbrE.getX(), nbrE.getY())) {
 				finalPath = tempPath;
-				czyZnaleziono = true;
+				isPathExists = true;
 
 				duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 
@@ -94,7 +94,7 @@ bool PathFinder::findPath(Grid & maze)
 
 				duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 
-				czyZnaleziono = true;
+				isPathExists = true;
 				return true;
 			}
 			else {
@@ -132,7 +132,7 @@ bool PathFinder::isInBorder(Field & field)
 
 void PathFinder::selectFinalPath(Grid & maze)
 {
-	if (czyZnaleziono) {
+	if (isPathExists) {
 		Field pathField;
 		while (finalPath.size() > 1) {
 			pathField = finalPath.top();
