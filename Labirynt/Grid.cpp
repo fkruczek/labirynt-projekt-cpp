@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "Grid.h"
-#include <algorithm>
-
 
 Grid::Grid(int size) //labirynt losowany
 {
@@ -33,7 +31,6 @@ Grid::Grid(int size) //labirynt losowany
 
 Grid::Grid(std::string fileContent) //labirynt z pliku
 {
-
 		setSize(fileContent);
 
 		fileContentNoWhiteSpaces = deleteWhiteSpaces(fileContent);
@@ -114,8 +111,16 @@ void Grid::allocGrid(int size)
 		grid[i] = new char[size];
 
 	visited = new bool*[size];
-	for (int i = 0; i < size; ++i)
+	for (int i = 0; i < size; ++i) {
 		visited[i] = new bool[size];
+		for (int j = 0; j < size; j++) {
+			visited[i][j] = false;
+		}
+	}
+
+
+
+
 /*
 	grid2 = new Field*[size];
 	for (int i = 0; i < size; ++i)
@@ -177,9 +182,10 @@ bool Grid::isVisited(int x, int y)
 
 bool Grid::isWalkable(int x, int y)
 {
-	if(grid[x][y] == '1')
+	if (grid[x][y] == '1' || grid[x][y] == 'K')
 		return true;
-	else return false;
+	else 
+		return false;
 }
 
 bool Grid::isExitPoint(int x, int y)

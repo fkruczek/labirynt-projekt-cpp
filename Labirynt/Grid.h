@@ -3,7 +3,9 @@
 #define GRID_H
 
 #include <cctype>
-#include "Field.h"
+#include <string>
+#include <algorithm>
+
 
 #define MIN_MAZE_SIZE 2
 #define MAX_MAZE_SIZE 150

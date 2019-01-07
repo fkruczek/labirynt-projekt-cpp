@@ -1,9 +1,8 @@
 #pragma once
 #ifndef FILEREADER_H
 #define FILEREADER_H
-
-#include "pch.h"
 #include <fstream>
+
 class FileReader
 {
 private:

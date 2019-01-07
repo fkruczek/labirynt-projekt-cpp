@@ -4,7 +4,7 @@
 
 #include "allegro5/allegro.h"
 #include "allegro5/allegro_primitives.h"
-
+#include "Grid.h"
 class View
 {
 private:

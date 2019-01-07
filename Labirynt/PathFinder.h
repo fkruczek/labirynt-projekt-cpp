@@ -1,21 +1,26 @@
 #pragma once
 #ifndef PATHFINDER_H
 #define PATHFINDER_H
-#include <queue>
-#include <vector>
+#include "Grid.h"
 #include "Field.h"
+#include <queue>
+#include <stack>
 class PathFinder
 {
 private:
+	int mazeSize;
 	int pathCounter = 0;
-	typedef std::queue<std::queue<Field>> queueArray;
-	queueArray paths;
+	typedef std::queue<std::stack<Field>> queueOfStacks;
+	queueOfStacks paths;
+	std::stack<Field> finalPath;
 public:
-	bool isPathExists();
 	PathFinder();
 	~PathFinder();
-	void createPath(int size);
+	void setMazeSize(int size);
+	bool findPath(Grid & maze);
 	void checkNeighbours(Field & field);
+	bool isInBorder(Field & field);
+	void selectPath(Grid & maze);
 };
 
 #endif
