@@ -5,14 +5,17 @@
 #include "Field.h"
 #include <queue>
 #include <stack>
+#include <vector>
 class PathFinder
 {
 private:
+	bool czyZnaleziono = false;
 	int mazeSize;
 	int pathCounter = 0;
 	typedef std::queue<std::stack<Field>> queueOfStacks;
 	queueOfStacks paths;
 	std::stack<Field> finalPath;
+	std::vector<std::stack<Field>> pathVector;
 public:
 	PathFinder();
 	~PathFinder();
@@ -20,7 +23,9 @@ public:
 	bool findPath(Grid & maze);
 	void checkNeighbours(Field & field);
 	bool isInBorder(Field & field);
-	void selectPath(Grid & maze);
+	void selectFinalPath(Grid & maze);
+	void selectVectorPath(Grid & maze, int n);
+	int getPathCounter();
 };
 
 #endif

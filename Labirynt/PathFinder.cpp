@@ -34,6 +34,7 @@ bool PathFinder::findPath(Grid & maze)
 			!maze.isVisited(nbrN.getX(), nbrN.getY())) {
 			if (maze.isExitPoint(nbrN.getX(), nbrN.getY())) {
 				finalPath = tempPath;
+				czyZnaleziono = true;
 				return true;
 			}
 			else {
@@ -48,6 +49,7 @@ bool PathFinder::findPath(Grid & maze)
 			!maze.isVisited(nbrS.getX(), nbrS.getY())) {
 			if (maze.isExitPoint(nbrS.getX(), nbrS.getY())) {
 				finalPath = tempPath;
+				czyZnaleziono = true;
 				return true;
 			}
 			else {
@@ -62,6 +64,7 @@ bool PathFinder::findPath(Grid & maze)
 			!maze.isVisited(nbrE.getX(), nbrE.getY())) {
 			if (maze.isExitPoint(nbrE.getX(), nbrE.getY())) {
 				finalPath = tempPath;
+				czyZnaleziono = true;
 				return true;
 			}
 			else {
@@ -76,6 +79,7 @@ bool PathFinder::findPath(Grid & maze)
 			!maze.isVisited(nbrW.getX(), nbrW.getY())) {
 			if (maze.isExitPoint(nbrW.getX(), nbrW.getY())) {
 				finalPath = tempPath;
+				czyZnaleziono = true;
 				return true;
 			}
 			else {
@@ -85,6 +89,8 @@ bool PathFinder::findPath(Grid & maze)
 				maze.setVisited(nbrW.getX(), nbrW.getY(), true);
 			}
 		}
+		pathVector.push_back(tempPath);
+		pathCounter++;
 	}
 	return false;
 }
@@ -109,15 +115,32 @@ bool PathFinder::isInBorder(Field & field)
 		return true;
 }
 
-void PathFinder::selectPath(Grid & maze)
+void PathFinder::selectFinalPath(Grid & maze)
+{
+	if (czyZnaleziono) {
+		Field pathField;
+		while (finalPath.size() > 1) {
+			pathField = finalPath.top();
+			finalPath.pop();
+
+			maze.setField(pathField.getX(), pathField.getY(), '3');
+		}
+	}
+}
+
+void PathFinder::selectVectorPath(Grid & maze, int n)
 {
 	Field pathField;
-	while (finalPath.size() > 1) {
-		pathField = finalPath.top();
-		finalPath.pop();
-
+	while (pathVector.at(n).size() > 1) {
+		pathField = pathVector.at(n).top();
+		pathVector.at(n).pop();
 		maze.setField(pathField.getX(), pathField.getY(), '2');
 	}
+}
+
+int PathFinder::getPathCounter()
+{
+	return pathCounter;
 }
 
 

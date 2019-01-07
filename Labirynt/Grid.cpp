@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "Grid.h"
 
+Grid::Grid()
+{
+}
+
 Grid::Grid(int size) //labirynt losowany
 {
 	setSize(size);

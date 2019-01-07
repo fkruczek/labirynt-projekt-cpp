@@ -18,6 +18,7 @@ private:
 	bool **visited;
 	std::string fileContentNoWhiteSpaces;
 public:
+	Grid();
 	Grid(int size); //random grid
 	Grid(std::string fileContent); //grid from file
 	std::string deleteWhiteSpaces(std::string str);
