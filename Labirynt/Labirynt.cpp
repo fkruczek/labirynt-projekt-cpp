@@ -13,30 +13,32 @@ int main(int argc, char **argv) {
 	
 	try {
 		if (choice == 1) {//labirynt z pliku
-				FileReader Reader;
-				Reader.readFromFile();
-				Grid Maze(Reader.getFileContent());
-				pathFinder.setMazeSize(Maze.getSize());
-				if (!pathFinder.findPath(Maze)) {
-					std::cout << "Nie znaleziono sciezki" << std::endl;
-				}
-				else {
-					std::cout << "Znaleziono sciezke" << std::endl;
-				}
-				V.drawMaze(Maze, pathFinder);
+			std::cout << "Szukanie sciezki w labiryncie z pliku..." << std::endl;
+			FileReader Reader;
+			Reader.readFromFile();
+			Grid Maze(Reader.getFileContent());
+			pathFinder.setMazeSize(Maze.getSize());
+			if (!pathFinder.findPath(Maze)) {
+				std::cout << "Nie znaleziono sciezki" << std::endl;
+			}
+			else {
+				std::cout << "Znaleziono sciezke" << std::endl;
+			}
+			V.drawMaze(Maze, pathFinder);
 		}
 		else {//losowanie labiryntu
-				Grid Maze(choice);
-				pathFinder.setMazeSize(Maze.getSize());
-				if (!pathFinder.findPath(Maze)) {
-					std::cout << "Nie znaleziono sciezki" << std::endl;
-				}
-				else {
-					std::cout << "Znaleziono sciezke" << std::endl;
-					std::cout << "Algorytm znalazl sciezke w " << pathFinder.getDuration() << "s." << std::endl;
-				}
-				V.drawMaze(Maze, pathFinder);
+			std::cout << "Szukanie sciezki w losowym labiryncie..." << std::endl;
+			Grid Maze(choice);
+			pathFinder.setMazeSize(Maze.getSize());
+			if (!pathFinder.findPath(Maze)) {
+				std::cout << "Nie znaleziono sciezki" << std::endl;
 			}
+			else {
+				std::cout << "Znaleziono sciezke" << std::endl;
+				std::cout << "Algorytm znalazl sciezke w " << pathFinder.getDuration() << "s." << std::endl;
+			}
+			V.drawMaze(Maze, pathFinder);
+		}
 	}
 	catch (const char *error) {
 		std::cout << "wystapil blad: " << error << std::endl;
