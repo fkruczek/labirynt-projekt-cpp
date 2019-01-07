@@ -6,6 +6,8 @@ class Field
 private:
 	int X;
 	int Y;
+	bool isVisited = false;
+	bool isWalkable = false;
 public:
 	Field(int x, int y);
 	~Field();

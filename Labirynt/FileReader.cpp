@@ -18,7 +18,8 @@ bool FileReader::readFromFile()
 		fileContent.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
 		return true;
 	}
-	else return false;
+	else
+		throw "Plik jest wadliwy lub nie istnieje";
 }
 
 std::string FileReader::getFileContent()

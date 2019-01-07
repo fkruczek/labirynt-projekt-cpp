@@ -10,9 +10,11 @@ class Grid
 private:
 	int gridSize;
 	char **grid;
+	std::string fileContentNoWhiteSpaces;
 public:
 	Grid(int size); //random grid
 	Grid(std::string fileContent); //grid from file
+	std::string deleteWhiteSpaces(std::string str);
 	~Grid();
 	void setSize(std::string fileContent);
 	void setSize(int size);

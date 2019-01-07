@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Grid.h"
+#include <algorithm>
 
 
 Grid::Grid(int size) //labirynt losowany
@@ -32,25 +33,28 @@ Grid::Grid(int size) //labirynt losowany
 
 Grid::Grid(std::string fileContent) //labirynt z pliku
 {
-		validate(fileContent);
 
 		setSize(fileContent);
 
+		fileContentNoWhiteSpaces = deleteWhiteSpaces(fileContent);
+		validate(fileContent);
 		allocGrid(gridSize);
-
-		//usuniecie znakow bialych z fileContent
-		std::string fileContentN;
-		for (size_t i = 0; i < fileContent.size(); i++) {
-			if (isalnum(fileContent[i]))
-				fileContentN += fileContent[i];
-		}
 
 		//string -> grid
 		for (int row = 0, i = 0; row < gridSize; row++) {
 			for (int col = 0; col < gridSize; col++) {
-				grid[row][col] = fileContentN[i++];
+				grid[row][col] = fileContentNoWhiteSpaces[i++];
 			}
 		}
+}
+
+std::string Grid::deleteWhiteSpaces(std::string str) {
+	std::string strNoWhiteSpaces;
+	for (size_t i = 0; i < str.size(); i++) {
+		if (isalnum(str[i]))
+			strNoWhiteSpaces += str[i];
+	}
+	return strNoWhiteSpaces;
 }
 
 Grid::~Grid()
@@ -60,11 +64,38 @@ Grid::~Grid()
 	delete[] grid;
 }
 
+void Grid::validate(std::string fileContent)
+{
+	std::size_t found = fileContent.find_first_not_of("SK01\n");
+	if (found != std::string::npos){
+		//const char *content = fileContent.c_str();
+		throw "Plik zawiera bledne znaki.";
+	}
+	if (gridSize*gridSize != fileContentNoWhiteSpaces.size()) {
+		throw "Niepoprawna liczba znakow";
+	}
+	if (fileContent.find_first_of('S') != fileContent.find_last_of('S')) {
+		throw "Moze byc tylko jedno wejscie";
+	}
+	if (fileContent.find_first_of('S') == std::string::npos) {
+		throw "Brak wejscia";
+	}
+	if (fileContent.find_first_of('K') == std::string::npos) {
+		throw "Brak wyjscia";
+	}
+}
+
 void Grid::setSize(std::string fileContent)
 {
 	if (!fileContent.empty())
 		gridSize = fileContent.substr(0, fileContent.find_first_of('\n')).length(); //czyli dlugosc pierwszej linii
-	else gridSize = 0;
+	else 
+		throw "Plik jest pusty";
+
+	if (gridSize < 2)
+		throw "Plik jest bledny";
+	else if (gridSize > 150)
+		throw "Labirynt jest za duzy";
 }
 
 void Grid::setSize(int size)
@@ -83,30 +114,6 @@ int Grid::randomizeSize()
 {
 	gridSize = rand() % 150 + 2;
 	return gridSize;
-}
-
-
-void Grid::validate(std::string fileContent)
-{
-	if (false)
-	{
-		//Ÿle
-		//bool isCorrect = true;
-		//const char *content = fileContent.c_str();
-		//int len = fileContent.size();
-
-		//fileContent.erase('\n');
-		//sprawdzanie poprawnosci
-		//koncepcje:
-		//czy labirynt jest wiekszy ni¿ 2X2 i mniejszy ni¿ ?X?
-		//czy pierwsza linia ma tyle znaków co jest linii
-		//trzeba wzi¹æ pod uwagê nawstawianie na koncu enterów (lub napocz¹tku lub gdziekolwiek)
-		//czy jest tylko jedno wejscie i jedno wyjscie
-		//czy oprócz wejscia i wyjscia sa tylko sciany i pola przechodnie
-
-		throw "!ERROR! !ERROR! !ERROR!";
-	}
-
 }
 
 char Grid::getField(int x, int y)
