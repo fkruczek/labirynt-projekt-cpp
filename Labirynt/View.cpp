@@ -28,6 +28,7 @@ void View::setWindowSize(int sizeWindow)
 void View::drawMaze(Grid & Maze)
 {
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
+
 	al_init_primitives_addon();
 
 	if (!al_init()) {
@@ -44,6 +45,8 @@ void View::drawMaze(Grid & Maze)
 		al_destroy_display(display);
 		throw "nie udalo sie utworzyc event_queue";
 	}
+
+	al_register_event_source(event_queue, al_get_display_event_source(display));
 
 	al_set_window_title(display, "Labirynt - projekt C++");
 
@@ -79,6 +82,7 @@ void View::drawMaze(Grid & Maze)
 	}
 
 	al_flip_display();
+
 	while (1)
 	{
 		ALLEGRO_EVENT ev;
@@ -86,8 +90,8 @@ void View::drawMaze(Grid & Maze)
 		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
 		}
-
 	}
+
 	al_destroy_display(display);
 	al_destroy_event_queue(event_queue);
 	al_shutdown_primitives_addon();

@@ -1,26 +1,30 @@
 #include "pch.h"
 #include "View.h"
+#include <ctime>
 
 int main(int argc, char **argv) {
-	int wybor;
+	int choice;
+	std::clock_t start; //dorobic ZEGAR!!
+	double duration;
 
-	View Widok;
-	wybor = Widok.mainMenu();
+	View V;
+	choice = V.mainMenu();
 	
-	if (wybor == 1) {//labirynt z pliku
+
+	if (choice == 1) {//labirynt z pliku
 		try {
-			FileReader Czytnik;
-			Czytnik.readFromFile();
-			Grid Labirynt(Czytnik.getFileContent());
-			Widok.drawMaze(Labirynt);
+			FileReader Reader;
+			Reader.readFromFile();
+			Grid Maze(Reader.getFileContent());
+			V.drawMaze(Maze);
 		}
 		catch (const char *error){
 			std::cout << "Wystapil blad: " << error << std::endl;
 		}
 	}
 	else {//losowanie labiryntu
-		Grid Labirynt(wybor);
-		Widok.drawMaze(Labirynt);
+		Grid Maze(choice);
+		V.drawMaze(Maze);
 	}
 	return 0;
 }
