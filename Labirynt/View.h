@@ -31,7 +31,6 @@ public:
 	int readSize();
 	void drawMaze(Grid & Maze, PathFinder & Finder);
 	int mainMenu();
-	void displayMaze(Grid & Maze, int sizeOfSquare);
 };
 
 #endif

@@ -16,27 +16,24 @@ int main(int argc, char **argv) {
 				FileReader Reader;
 				Reader.readFromFile();
 				Grid Maze(Reader.getFileContent());
-				//V.drawMaze(Maze, pathFinder);
 				pathFinder.setMazeSize(Maze.getSize());
 				if (!pathFinder.findPath(Maze)) {
 					std::cout << "Nie znaleziono sciezki" << std::endl;
 				}
 				else {
 					std::cout << "Znaleziono sciezke" << std::endl;
-					//pathFinder.selectPath(Maze);
 				}
 				V.drawMaze(Maze, pathFinder);
 		}
 		else {//losowanie labiryntu
 				Grid Maze(choice);
-				//V.drawMaze(Maze, pathFinder);
 				pathFinder.setMazeSize(Maze.getSize());
 				if (!pathFinder.findPath(Maze)) {
 					std::cout << "Nie znaleziono sciezki" << std::endl;
 				}
 				else {
-			//		pathFinder.selectFinalPath(Maze);
 					std::cout << "Znaleziono sciezke" << std::endl;
+					std::cout << "Algorytm znalazl sciezke w " << pathFinder.getDuration() << "s." << std::endl;
 				}
 				V.drawMaze(Maze, pathFinder);
 			}

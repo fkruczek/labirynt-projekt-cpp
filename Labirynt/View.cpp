@@ -59,7 +59,7 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 
 	setMazeSize(Maze.getSize());
 	int sizeOfSquare = windowSize / mazeSize;
-
+	double restTime = 1.0 / mazeSize;
 	for (int nPath = 0; nPath < Finder.getPathCounter(); nPath++) {
 		Finder.selectVectorPath(Maze, nPath);
 		for (int row = 0; row < mazeSize; row++) {
@@ -87,7 +87,7 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 			}
 		}
 		al_flip_display();
-		al_rest(0.05);
+		al_rest(restTime);
 	}
 		Finder.selectFinalPath(Maze);
 
@@ -160,34 +160,6 @@ int View::mainMenu()
 		} while (size < MIN_MAZE_SIZE || size > MAX_MAZE_SIZE);
 
 		return size;
-	}
-}
-
-void View::displayMaze(Grid & Maze, int sizeOfSquare)
-{
-	for (int row = 0; row < mazeSize; row++) {
-		for (int col = 0; col < mazeSize; col++) {
-			switch (Maze.getField(col, row)) {
-			case '0':
-				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_wall);
-				break;
-			case '1':
-				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_ground);
-				break;
-			case '2':
-				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_path);
-				break;
-			case '3':
-				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_finalpath);
-				break;
-			case 'S':
-				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_enter);
-				break;
-			case 'K':
-				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_exit);
-				break;
-			}
-		}
 	}
 }
 

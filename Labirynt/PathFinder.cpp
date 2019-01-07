@@ -19,6 +19,9 @@ bool PathFinder::findPath(Grid & maze)
 	Field startingPoint(maze.getStartingPointX(), maze.getStartingPointY());
 	startingPath.push(startingPoint);
 	paths.push(startingPath);
+
+	start = std::clock();
+
 	while (!paths.empty()) {
 		std::stack<Field> tempPath = paths.front();
 		paths.pop();
@@ -35,6 +38,9 @@ bool PathFinder::findPath(Grid & maze)
 			if (maze.isExitPoint(nbrN.getX(), nbrN.getY())) {
 				finalPath = tempPath;
 				czyZnaleziono = true;
+
+				duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+
 				return true;
 			}
 			else {
@@ -50,6 +56,9 @@ bool PathFinder::findPath(Grid & maze)
 			if (maze.isExitPoint(nbrS.getX(), nbrS.getY())) {
 				finalPath = tempPath;
 				czyZnaleziono = true;
+
+				duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+
 				return true;
 			}
 			else {
@@ -65,6 +74,9 @@ bool PathFinder::findPath(Grid & maze)
 			if (maze.isExitPoint(nbrE.getX(), nbrE.getY())) {
 				finalPath = tempPath;
 				czyZnaleziono = true;
+
+				duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+
 				return true;
 			}
 			else {
@@ -79,6 +91,9 @@ bool PathFinder::findPath(Grid & maze)
 			!maze.isVisited(nbrW.getX(), nbrW.getY())) {
 			if (maze.isExitPoint(nbrW.getX(), nbrW.getY())) {
 				finalPath = tempPath;
+
+				duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+
 				czyZnaleziono = true;
 				return true;
 			}
@@ -141,6 +156,11 @@ void PathFinder::selectVectorPath(Grid & maze, int n)
 int PathFinder::getPathCounter()
 {
 	return pathCounter;
+}
+
+double PathFinder::getDuration()
+{
+	return duration;
 }
 
 

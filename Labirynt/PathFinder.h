@@ -6,6 +6,7 @@
 #include <queue>
 #include <stack>
 #include <vector>
+#include <ctime>
 class PathFinder
 {
 private:
@@ -16,6 +17,9 @@ private:
 	queueOfStacks paths;
 	std::stack<Field> finalPath;
 	std::vector<std::stack<Field>> pathVector;
+
+	std::clock_t start;
+	double duration;
 public:
 	PathFinder();
 	~PathFinder();
@@ -26,6 +30,7 @@ public:
 	void selectFinalPath(Grid & maze);
 	void selectVectorPath(Grid & maze, int n);
 	int getPathCounter();
+	double getDuration();
 };
 
 #endif
