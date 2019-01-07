@@ -41,5 +41,8 @@ int main(int argc, char **argv) {
 	catch (const char *error) {
 		std::cout << "wystapil blad: " << error << std::endl;
 	}
+
+	std::cin.get();
+	std::cin.get();
 	return 0;
 }
