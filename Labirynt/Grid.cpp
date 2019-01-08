@@ -174,6 +174,27 @@ int Grid::getStartingPointY()
 	return 0;
 }
 
+int Grid::getExitPointX()
+{
+	for (int row = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			if (grid[row][col] == 'K')
+				return row;
+		}
+	}
+	return 0;
+}
+
+int Grid::getExitPointY()
+{
+	for (int row = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			if (grid[row][col] == 'K')
+				return col;
+		}
+	}
+	return 0;
+}
 void Grid::setVisited(int x, int y, bool state)
 {
 	visited[x][y] = state;

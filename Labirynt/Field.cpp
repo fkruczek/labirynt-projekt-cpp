@@ -5,11 +5,14 @@ Field::Field()
 {
 }
 
-Field::Field(int x, int y)
+Field::Field(int x, int y, int exPntX, int exPntY)
 {
 	X = x;
 	Y = y;
+
+	distance = abs(x - exPntX)*abs(y - exPntY);
 }
+
 
 Field::~Field()
 {
@@ -33,4 +36,13 @@ int Field::getX()
 int Field::getY()
 {
 	return Y;
+}
+
+int Field::getDistance()
+{
+	return distance;
+}
+
+void Field::setDistance()
+{
 }

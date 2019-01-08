@@ -33,6 +33,8 @@ public:
 	int getSize();
 	int getStartingPointX();
 	int getStartingPointY();
+	int getExitPointX();
+	int getExitPointY();
 
 	void setVisited(int x, int y, bool state);
 	bool isVisited(int x, int y);

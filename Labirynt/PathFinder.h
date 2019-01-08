@@ -7,14 +7,20 @@
 #include <stack>
 #include <vector>
 #include <ctime>
+
+struct CompareAge {
+	bool operator()(std::stack<Field> & p1, std::stack<Field> & p2) {
+		return p1.top().getDistance() > p2.top().getDistance();
+	}
+};
+
 class PathFinder
 {
 private:
 	bool isPathExists = false;
 	int mazeSize;
 	int pathCounter = 0;
-	typedef std::queue<std::stack<Field>> queueOfStacks;
-	queueOfStacks paths;
+	std::priority_queue<std::stack<Field>, std::vector<std::stack<Field>>, CompareAge> paths;
 	std::stack<Field> finalPath;
 	std::vector<std::stack<Field>> pathVector;
 

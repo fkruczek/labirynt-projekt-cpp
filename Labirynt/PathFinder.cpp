@@ -13,24 +13,29 @@ PathFinder::~PathFinder()
 
 bool PathFinder::findPath(Grid & maze)
 {
+	int exPntX = maze.getExitPointX();
+	int exPntY = maze.getExitPointY();
+
 	mazeSize = maze.getSize();
 	maze.setVisited(maze.getStartingPointX(), maze.getStartingPointY(), true);
 	std::stack<Field> startingPath;
-	Field startingPoint(maze.getStartingPointX(), maze.getStartingPointY());
+	Field startingPoint(maze.getStartingPointX(), maze.getStartingPointY(), exPntX, exPntY);
 	startingPath.push(startingPoint);
+	//startingPath->push(startingPoint);
+	//paths.push(startingPath);
 	paths.push(startingPath);
 
 	start = std::clock();
 
 	while (!paths.empty()) {
-		std::stack<Field> tempPath = paths.front();
+		std::stack<Field> tempPath = paths.top();
 		paths.pop();
 		Field endOfPath = tempPath.top();
 
-		Field nbrN(endOfPath.getX(), endOfPath.getY() - 1);
-		Field nbrS(endOfPath.getX(), endOfPath.getY() + 1);
-		Field nbrW(endOfPath.getX() - 1, endOfPath.getY());
-		Field nbrE(endOfPath.getX() + 1, endOfPath.getY());
+		Field nbrN(endOfPath.getX(), endOfPath.getY() - 1, exPntX, exPntY);
+		Field nbrS(endOfPath.getX(), endOfPath.getY() + 1, exPntX, exPntY);
+		Field nbrW(endOfPath.getX() - 1, endOfPath.getY(), exPntX, exPntY);
+		Field nbrE(endOfPath.getX() + 1, endOfPath.getY(), exPntX, exPntY);
 
 		if (isInBorder(nbrN) &&
 			maze.isWalkable(nbrN.getX(), nbrN.getY()) &&
