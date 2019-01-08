@@ -1,50 +1,35 @@
 #include "pch.h"
-#include "View.h"
+//#include "View.h"
 #include "FileReader.h"
-#include "PathFinder.h"
+//#include "PathFinder.h"
+#include "fastPathFinder.h"
 #include <ctime>
 
 int main(int argc, char **argv) {
-	int choice;
-
-	View V;
-	PathFinder pathFinder;
-	choice = V.mainMenu();
-	
+	std::clock_t start;
+	double duration;
 	try {
-		if (choice == 1) {//labirynt z pliku
-			std::cout << "Szukanie sciezki w labiryncie z pliku..." << std::endl;
-			FileReader Reader;
-			Reader.readFromFile();
-			Grid Maze(Reader.getFileContent());
-			pathFinder.setMazeSize(Maze.getSize());
-			if (!pathFinder.findPath(Maze)) {
-				std::cout << "Nie znaleziono sciezki" << std::endl;
-			}
-			else {
-				std::cout << "Znaleziono sciezke" << std::endl;
-			}
-			V.drawMaze(Maze, pathFinder);
-		}
-		else {//losowanie labiryntu
-			std::cout << "Szukanie sciezki w losowym labiryncie..." << std::endl;
-			Grid Maze(choice);
-			pathFinder.setMazeSize(Maze.getSize());
-			if (!pathFinder.findPath(Maze)) {
-				std::cout << "Nie znaleziono sciezki" << std::endl;
-			}
-			else {
-				std::cout << "Znaleziono sciezke" << std::endl;
-				std::cout << "Algorytm znalazl sciezke w " << pathFinder.getDuration() << "s." << std::endl;
-			}
-			V.drawMaze(Maze, pathFinder);
+		FileReader reader;
+		reader.readFromFile();
+		Grid maze(100, 20);
+		fastPathFinder finder;
+		finder.setGrid(maze.getGrid());
+		finder.setVisited(maze.getVisited());
+		finder.setStartingPoint(maze.getStartingPointX(), maze.getStartingPointY());
+		finder.setExitPoint(maze.getExitPointX(), maze.getExitPointY());
+		finder.setGridSize(maze.getSize());
+		start = std::clock();
+		if(finder.findPath())
+			std::cout << "znaleziono";
+		duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+		std::cout << "Algorytm znalazl sciezke w " << duration << " sekund\n";
+		
+		for(int i = 0; i<finder.getPathLength(); i++){
+			std::cout << finder.getPathR() << " " << finder.getPathC() << std::endl;
 		}
 	}
 	catch (const char *error) {
 		std::cout << "wystapil blad: " << error << std::endl;
 	}
-
-	std::cin.get();
-	std::cin.get();
 	return 0;
 }

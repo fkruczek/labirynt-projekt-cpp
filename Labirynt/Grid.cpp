@@ -5,7 +5,7 @@ Grid::Grid()
 {
 }
 
-Grid::Grid(int size) //labirynt losowany
+Grid::Grid(int size, int wallChance) //labirynt losowany
 {
 	setSize(size);
 	allocGrid(gridSize);
@@ -14,7 +14,7 @@ Grid::Grid(int size) //labirynt losowany
 	for (int row = 0; row < gridSize; row++) {
 		for (int col = 0; col < gridSize; col++) {
 			randnum1 = rand() % 100;
-			if (randnum1<35) grid[row][col] = '0';
+			if (randnum1<wallChance) grid[row][col] = '0';
 			else grid[row][col] = '1';
 		}
 	}
@@ -174,6 +174,28 @@ int Grid::getStartingPointY()
 	return 0;
 }
 
+int Grid::getExitPointX()
+{
+	for (int row = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			if (grid[row][col] == 'K')
+				return row;
+		}
+	}
+	return 0;
+}
+
+int Grid::getExitPointY()
+{
+	for (int row = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			if (grid[row][col] == 'K')
+				return col;
+		}
+	}
+	return 0;
+}
+
 void Grid::setVisited(int x, int y, bool state)
 {
 	visited[x][y] = state;
@@ -197,4 +219,14 @@ bool Grid::isExitPoint(int x, int y)
 	if (grid[x][y] == 'K')
 		return true;
 	else return false;
+}
+
+char ** Grid::getGrid()
+{
+	return grid;
+}
+
+bool ** Grid::getVisited()
+{
+	return visited;
 }

@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="fastPathFinder.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="Grid.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="View.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="fastPathFinder.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="Grid.cpp" />

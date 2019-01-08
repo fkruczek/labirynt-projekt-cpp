@@ -19,7 +19,7 @@ private:
 	std::string fileContentNoWhiteSpaces;
 public:
 	Grid();
-	Grid(int size); //random grid
+	Grid(int size, int wallChance); //random grid
 	Grid(std::string fileContent); //grid from file
 	std::string deleteWhiteSpaces(std::string str);
 	~Grid();
@@ -34,10 +34,17 @@ public:
 	int getStartingPointX();
 	int getStartingPointY();
 
+	int getExitPointX();
+
+	int getExitPointY();
+
 	void setVisited(int x, int y, bool state);
 	bool isVisited(int x, int y);
 
 	bool isWalkable(int x, int y);
 	bool isExitPoint(int x, int y);
+
+	char **getGrid();
+	bool **getVisited();
 };
 #endif

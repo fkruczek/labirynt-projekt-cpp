@@ -25,7 +25,7 @@ void View::setWindowSize(int sizeWindow)
 
 
 
-void View::drawMaze(Grid & Maze, PathFinder & Finder)
+void View::drawMaze(Grid & Maze)
 {
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
 
@@ -56,7 +56,7 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 	ALLEGRO_COLOR color_finalpath = al_map_rgb(255, 130, 102);
 	ALLEGRO_COLOR color_enter = al_map_rgb(30, 14, 220);
 	ALLEGRO_COLOR color_exit = al_map_rgb(220, 70, 50);
-
+/*
 	setMazeSize(Maze.getSize());
 	int sizeOfSquare = windowSize / (mazeSize);
 	double restTime = 1.0 / mazeSize;
@@ -118,7 +118,7 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 
 		al_flip_display();
 		al_rest(0.05);
-	
+	*/
 
 	while (1)
 	{
