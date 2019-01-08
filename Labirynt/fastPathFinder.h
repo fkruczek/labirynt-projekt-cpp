@@ -16,8 +16,8 @@ private:
 	int exPntC;
 
 
-	std::list<std::stack<int>> rq;
-	std::list<std::stack<int>> cq;
+	std::queue<std::stack<int>> rq;
+	std::queue<std::stack<int>> cq;
 
 	std::stack<int> startR;
 	std::stack<int> startC;
@@ -59,6 +59,7 @@ public:
 	int getPathR();
 	int getPathC();
 	int getPathLength();
+	int getGridSize();
 	int calculateDistance(int x1, int y1, int x2, int y2);
 };
 

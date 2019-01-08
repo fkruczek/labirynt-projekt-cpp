@@ -15,17 +15,17 @@ int fastPathFinder::findPath()
 	startR.push(stPntR);
 	startC.push(stPntC);
 
-	rq.push_back(startR);
-	cq.push_back(startC);
+	rq.push(startR);
+	cq.push(startC);
 
 	visited[startR.top()][startC.top()] = true;
 
 
 	while (!rq.empty()) {
 		tempR = rq.front();
-		rq.pop_front();
+		rq.pop();
 		tempC = cq.front();
-		cq.pop_front();
+		cq.pop();
 
 		if (grid[tempR.top()][tempC.top()] == 'K') {
 			pathLength = tempR.size();
@@ -64,15 +64,14 @@ void fastPathFinder::exploreNbrs()
 		tempR.push(newR);
 		tempC.push(newC);
 
-		if (calculateDistance(newR, newC, exPntR, exPntC) >
-			calculateDistance(rq.front().top(), cq.front().top(), exPntR, exPntC)) {
-			rq.push_front(tempR);
-			cq.push_front(tempC);
-		}
-		else {
-			rq.push_back(tempR);
-			cq.push_back(tempC);
-		}
+		//if (!cq.empty() && calculateDistance(newR, newC, exPntR, exPntC) > calculateDistance(rq.front().top(), cq.front().top(), exPntR, exPntC)) {
+		//	rq.push_front(tempR);
+		//	cq.push_front(tempC);
+		//}
+		//else {
+			rq.push(tempR);
+			cq.push(tempC);
+		//}
 
 		//tylko do reprezentacji graficznej
 		visitedFieldsR.push(newR);
@@ -136,6 +135,11 @@ int fastPathFinder::getPathC()
 int fastPathFinder::getPathLength()
 {
 	return pathLength;
+}
+
+int fastPathFinder::getGridSize()
+{
+	return gridSize;
 }
 
 int fastPathFinder::calculateDistance(int x1, int y1, int x2, int y2)

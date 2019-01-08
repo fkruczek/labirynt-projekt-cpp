@@ -23,117 +23,6 @@ void View::setWindowSize(int sizeWindow)
 	windowSize = sizeWindow;
 }
 
-
-
-void View::drawMaze(Grid & Maze)
-{
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
-
-	al_init_primitives_addon();
-
-	if (!al_init()) {
-		throw "nie udalo sie zainicjalizowac allegro";
-	}
-
-	display = al_create_display(windowSize, windowSize);
-	if (!display) {
-		throw "nie udalo sie utworzyc display";
-	}
-
-	event_queue = al_create_event_queue();
-	if (!event_queue) {
-		al_destroy_display(display);
-		throw "nie udalo sie utworzyc event_queue";
-	}
-
-	al_register_event_source(event_queue, al_get_display_event_source(display));
-
-	al_set_window_title(display, "Labirynt - projekt C++");
-
-	ALLEGRO_COLOR color_wall = al_map_rgb(0, 42, 63);
-	ALLEGRO_COLOR color_ground = al_map_rgb(76, 98, 120);
-	ALLEGRO_COLOR color_path = al_map_rgb(155, 211, 122);
-	ALLEGRO_COLOR color_finalpath = al_map_rgb(255, 130, 102);
-	ALLEGRO_COLOR color_enter = al_map_rgb(30, 14, 220);
-	ALLEGRO_COLOR color_exit = al_map_rgb(220, 70, 50);
-/*
-	setMazeSize(Maze.getSize());
-	int sizeOfSquare = windowSize / (mazeSize);
-	double restTime = 1.0 / mazeSize;
-	for (int nPath = 0; nPath < Finder.getPathCounter(); nPath++) {
-		Finder.selectVectorPath(Maze, nPath);
-		for (int row = 0; row < mazeSize; row++) {
-			for (int col = 0; col < mazeSize; col++) {
-				switch (Maze.getField(col, row)) {
-				case '0':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_wall);
-					break;
-				case '1':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_ground);
-					break;
-				case '2':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_path);
-					break;
-				case '3':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_finalpath);
-					break;
-				case 'S':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_enter);
-					break;
-				case 'K':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_exit);
-					break;
-				}
-			}
-		}
-		al_flip_display();
-		al_rest(restTime);
-	}
-		Finder.selectFinalPath(Maze);
-
-		for (int row = 0; row < mazeSize; row++) {
-			for (int col = 0; col < mazeSize; col++) {
-				switch (Maze.getField(col, row)) {
-				case '0':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_wall);
-					break;
-				case '1':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_ground);
-					break;
-				case '2':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_path);
-					break;
-				case '3':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_finalpath);
-					break;
-				case 'S':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_enter);
-					break;
-				case 'K':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_exit);
-					break;
-				}
-			}
-		}
-
-		al_flip_display();
-		al_rest(0.05);
-	*/
-
-	while (1)
-	{
-		ALLEGRO_EVENT ev;
-		al_wait_for_event(event_queue, &ev);
-		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-			break;
-		}
-	}
-
-	al_destroy_display(display);
-	al_destroy_event_queue(event_queue);
-	al_shutdown_primitives_addon();
-}
-
 int View::mainMenu()
 {
 	std::cout << "Program LABIRYNT" << std::endl;
@@ -174,4 +63,92 @@ int View::readSize()
 			continue;
 	}
 	return size;
+}
+
+void View::drawMaze(fastPathFinder & Finder, Grid & Maze)
+{
+
+	al_set_new_display_flags(ALLEGRO_WINDOWED);
+
+	al_init_primitives_addon();
+
+	if (!al_init()) {
+		throw "nie udalo sie zainicjalizowac allegro";
+	}
+
+	display = al_create_display(windowSize, windowSize);
+	if (!display) {
+		throw "nie udalo sie utworzyc display";
+	}
+
+	event_queue = al_create_event_queue();
+	if (!event_queue) {
+		al_destroy_display(display);
+		throw "nie udalo sie utworzyc event_queue";
+	}
+
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+
+	al_set_window_title(display, "Labirynt - projekt C++");
+
+
+	ALLEGRO_COLOR color_wall = al_map_rgb(0, 42, 63);
+	ALLEGRO_COLOR color_ground = al_map_rgb(76, 98, 120);
+	ALLEGRO_COLOR color_path = al_map_rgb(155, 211, 122);
+	ALLEGRO_COLOR color_finalpath = al_map_rgb(255, 130, 102);
+	ALLEGRO_COLOR color_enter = al_map_rgb(30, 14, 220);
+	ALLEGRO_COLOR color_exit = al_map_rgb(220, 70, 50);
+
+	setMazeSize(Finder.getGridSize());
+	int sizeOfSquare = windowSize / (mazeSize);
+	int row, col;
+	double restTime = 0.01;
+
+	for (int row = 0; row < mazeSize; row++) {
+		for (int col = 0; col < mazeSize; col++) {
+			switch (Maze.getField(row, col)) {
+			case '0':
+				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_wall);
+				break;
+			case '1':
+				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_ground);
+				break;
+			case '2':
+				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_path);
+				break;
+			case '3':
+				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_finalpath);
+				break;
+			case 'S':
+				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_enter);
+				break;
+			case 'K':
+				al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_exit);
+				break;
+			}
+		}
+	}
+
+	al_flip_display();
+	al_rest(0.03);
+
+	for (int i = 0; i < Finder.getPathLength(); i++) {
+		row = Finder.getPathR();
+		col = Finder.getPathC();
+		al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_path);
+		al_flip_display();
+		al_rest(0.5);
+	}
+		while (1)
+		{
+			ALLEGRO_EVENT ev;
+			al_wait_for_event(event_queue, &ev);
+			if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+				break;
+			}
+		}
+
+	al_destroy_display(display);
+	al_destroy_event_queue(event_queue);
+	al_shutdown_primitives_addon();
 }

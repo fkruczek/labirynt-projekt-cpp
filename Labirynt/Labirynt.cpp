@@ -1,5 +1,5 @@
 #include "pch.h"
-//#include "View.h"
+#include "View.h"
 #include "FileReader.h"
 //#include "PathFinder.h"
 #include "fastPathFinder.h"
@@ -9,9 +9,10 @@ int main(int argc, char **argv) {
 	std::clock_t start;
 	double duration;
 	try {
+		View v;
 		FileReader reader;
 		reader.readFromFile();
-		Grid maze(100, 20);
+		Grid maze(20, 0);
 		fastPathFinder finder;
 		finder.setGrid(maze.getGrid());
 		finder.setVisited(maze.getVisited());
@@ -23,10 +24,9 @@ int main(int argc, char **argv) {
 			std::cout << "znaleziono";
 		duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 		std::cout << "Algorytm znalazl sciezke w " << duration << " sekund\n";
-		
-		for(int i = 0; i<finder.getPathLength(); i++){
-			std::cout << finder.getPathR() << " " << finder.getPathC() << std::endl;
-		}
+		v.drawMaze(finder, maze);
+
+
 	}
 	catch (const char *error) {
 		std::cout << "wystapil blad: " << error << std::endl;
