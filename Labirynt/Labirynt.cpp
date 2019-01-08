@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 		View v;
 		FileReader reader;
 		reader.readFromFile();
-		Grid maze(20, 0);
+		Grid maze(30, 2);
 		fastPathFinder finder;
 		finder.setGrid(maze.getGrid());
 		finder.setVisited(maze.getVisited());

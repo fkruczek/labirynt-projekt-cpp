@@ -36,7 +36,7 @@ private:
 
 	bool reached_end = false;
 
-	int directionRow[4] { -1, 1, 0, 0 };
+	int directionRow[4] { 1, -1, 0, 0 };
 	int directionCol[4] { 0, 0, 1, -1 };
 
 	int newR;
