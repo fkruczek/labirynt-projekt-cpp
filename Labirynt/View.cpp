@@ -93,6 +93,9 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 		}
 
 		al_flip_display();
+		//w tym momencie jezeli enter to dalej, jezeli naklikane to zmieniaj wartosci pol w labiryncie
+		//jezeli nacisniete na wyjscie/wejscie to nastepny polozony to bedzie wyjscie/wejscie
+		//jezeli enter to szukaj sciezki
 		al_rest(1);
 
 		if (!Finder.findPath(Maze)) {
