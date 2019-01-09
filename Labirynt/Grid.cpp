@@ -7,6 +7,7 @@ Grid::Grid()
 
 Grid::Grid(int size, int wallPerc) //labirynt losowany
 {
+	srand(time(NULL));
 	setSize(size);
 	allocGrid(gridSize);
 	int randnum1, randnum2, randnum3, randnum4;

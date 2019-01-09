@@ -5,7 +5,7 @@
 #include <cctype>
 #include <string>
 #include <algorithm>
-
+#include <ctime>
 
 #define MIN_MAZE_SIZE 2
 #define MAX_MAZE_SIZE 150
