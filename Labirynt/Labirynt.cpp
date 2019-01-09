@@ -2,49 +2,53 @@
 #include "View.h"
 #include "FileReader.h"
 #include "PathFinder.h"
-#include <ctime>
+#include <Windows.h>
+
+void clearScreen(char fill = ' ');
 
 int main(int argc, char **argv) {
 	int choice;
 
+
+	while (true) {
+	clearScreen();
 	View V;
 	PathFinder pathFinder;
 	choice = V.mainMenu();
-	
 	try {
-		if (choice == 1) {//labirynt z pliku
-			std::cout << "Szukanie sciezki w labiryncie z pliku..." << std::endl;
+		if (choice == 1) {//labirynt z plikua
 			FileReader Reader;
 			Reader.readFromFile();
 			Grid Maze(Reader.getFileContent());
 			pathFinder.setMazeSize(Maze.getSize());
-			if (!pathFinder.findPath(Maze)) {
-				std::cout << "Nie znaleziono sciezki" << std::endl;
-			}
-			else {
-				std::cout << "Znaleziono sciezke" << std::endl;
-			}
+			std::cout << "Szukam sciezki w labiryncie z pliku..." << std::endl;
 			V.drawMaze(Maze, pathFinder);
 		}
 		else {//losowanie labiryntu
-			std::cout << "Szukanie sciezki w losowym labiryncie..." << std::endl;
-			Grid Maze(choice);
+			Grid Maze(choice, V.getWallPerc());
 			pathFinder.setMazeSize(Maze.getSize());
-			if (!pathFinder.findPath(Maze)) {
-				std::cout << "Nie znaleziono sciezki" << std::endl;
-			}
-			else {
-				std::cout << "Znaleziono sciezke" << std::endl;
-				std::cout << "Algorytm znalazl sciezke w " << pathFinder.getDuration() << "s." << std::endl;
-			}
+			std::cout << "Szukam sciezki w losowym labiryncie..." << std::endl;
 			V.drawMaze(Maze, pathFinder);
 		}
 	}
 	catch (const char *error) {
 		std::cout << "wystapil blad: " << error << std::endl;
 	}
-
+	std::cin.get();
+	std::cin.get();
+	}
 	std::cin.get();
 	std::cin.get();
 	return 0;
+}
+
+void clearScreen(char fill) {
+	COORD tl = { 0,0 };
+	CONSOLE_SCREEN_BUFFER_INFO s;
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(console, &s);
+	DWORD written, cells = s.dwSize.X * s.dwSize.Y;
+	FillConsoleOutputCharacter(console, fill, cells, tl, &written);
+	FillConsoleOutputAttribute(console, s.wAttributes, cells, tl, &written);
+	SetConsoleCursorPosition(console, tl);
 }

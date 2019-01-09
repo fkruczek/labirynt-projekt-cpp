@@ -15,11 +15,12 @@ class Grid
 private:
 	int gridSize;
 	char **grid;
+	char **primaryGrid;
 	bool **visited;
 	std::string fileContentNoWhiteSpaces;
 public:
 	Grid();
-	Grid(int size); //random grid
+	Grid(int size, int wallPerc); //random grid
 	Grid(std::string fileContent); //grid from file
 	std::string deleteWhiteSpaces(std::string str);
 	~Grid();
@@ -35,6 +36,9 @@ public:
 	int getStartingPointY();
 	int getExitPointX();
 	int getExitPointY();
+
+	void exportPrimaryGrid();
+	void importPrimaryGrid();
 
 	void setVisited(int x, int y, bool state);
 	bool isVisited(int x, int y);

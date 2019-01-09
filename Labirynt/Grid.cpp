@@ -5,7 +5,7 @@ Grid::Grid()
 {
 }
 
-Grid::Grid(int size) //labirynt losowany
+Grid::Grid(int size, int wallPerc) //labirynt losowany
 {
 	setSize(size);
 	allocGrid(gridSize);
@@ -14,7 +14,7 @@ Grid::Grid(int size) //labirynt losowany
 	for (int row = 0; row < gridSize; row++) {
 		for (int col = 0; col < gridSize; col++) {
 			randnum1 = rand() % 100;
-			if (randnum1<35) grid[row][col] = '0';
+			if (randnum1<wallPerc) grid[row][col] = '0';
 			else grid[row][col] = '1';
 		}
 	}
@@ -194,6 +194,12 @@ int Grid::getExitPointY()
 		}
 	}
 	return 0;
+}
+void Grid::exportPrimaryGrid()
+{
+}
+void Grid::importPrimaryGrid()
+{
 }
 void Grid::setVisited(int x, int y, bool state)
 {

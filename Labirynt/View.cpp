@@ -2,6 +2,7 @@
 #include "View.h"
 
 
+
 View::View()
 {
 
@@ -10,7 +11,6 @@ View::View()
 
 View::~View()
 {
-
 }
 
 void View::setMazeSize(int gridSize)
@@ -35,6 +35,9 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 		throw "nie udalo sie zainicjalizowac allegro";
 	}
 
+	setMazeSize(Maze.getSize());
+	int sizeOfSquare = windowSize / mazeSize;
+	windowSize = sizeOfSquare * mazeSize;
 	display = al_create_display(windowSize, windowSize);
 	if (!display) {
 		throw "nie udalo sie utworzyc display";
@@ -57,11 +60,13 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 	ALLEGRO_COLOR color_enter = al_map_rgb(30, 14, 220);
 	ALLEGRO_COLOR color_exit = al_map_rgb(220, 70, 50);
 
-	setMazeSize(Maze.getSize());
-	int sizeOfSquare = windowSize / (mazeSize);
-	double restTime = 1.0 / mazeSize;
-	for (int nPath = 0; nPath < Finder.getPathCounter(); nPath++) {
-		Finder.selectVectorPath(Maze, nPath);
+	bool done = false;
+	while (!done)
+	{
+		ALLEGRO_EVENT ev;
+		ALLEGRO_TIMEOUT timeout;
+
+
 		for (int row = 0; row < mazeSize; row++) {
 			for (int col = 0; col < mazeSize; col++) {
 				switch (Maze.getField(col, row)) {
@@ -86,9 +91,60 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 				}
 			}
 		}
+
 		al_flip_display();
-		al_rest(restTime);
-	}
+		al_rest(1);
+
+		if (!Finder.findPath(Maze)) {
+			std::cout << "Nie znaleziono sciezki" << std::endl;
+		}
+		else {
+			std::cout << "Znaleziono sciezke" << std::endl;
+		}
+		std::cout << "Czas szukania " << Finder.getDuration() << "s." << std::endl;
+
+		double restTime = 1.0 / (mazeSize);
+		al_init_timeout(&timeout, restTime);
+
+
+		for (int nPath = 0; nPath < Finder.getPathCounter(); nPath++) {
+			Finder.selectVectorPath(Maze, nPath);
+			for (int row = 0; row < mazeSize; row++) {
+				for (int col = 0; col < mazeSize; col++) {
+					switch (Maze.getField(col, row)) {
+					case '0':
+						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_wall);
+						break;
+					case '1':
+						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_ground);
+						break;
+					case '2':
+						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_path);
+						break;
+					case '3':
+						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_finalpath);
+						break;
+					case 'S':
+						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_enter);
+						break;
+					case 'K':
+						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_exit);
+						break;
+					}
+				}
+			}
+			al_flip_display();
+			al_rest(restTime);
+			bool get_event = al_wait_for_event_until(event_queue, &ev, &timeout);
+
+			if (get_event && ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+				done = true;
+				break;
+			}
+		}
+
+		if (done) break;
+
 		Finder.selectFinalPath(Maze);
 
 		for (int row = 0; row < mazeSize; row++) {
@@ -115,23 +171,23 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 				}
 			}
 		}
-
 		al_flip_display();
-		al_rest(0.05);
-	
+		
 
-	while (1)
-	{
-		ALLEGRO_EVENT ev;
-		al_wait_for_event(event_queue, &ev);
-		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-			break;
+		while (true) {
+			al_wait_for_event(event_queue, &ev);
+			if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+				done = true;
+				break;
+			}
 		}
-	}
+		if (done) break;
 
+	}
 	al_destroy_display(display);
 	al_destroy_event_queue(event_queue);
 	al_shutdown_primitives_addon();
+
 }
 
 int View::mainMenu()
@@ -156,14 +212,24 @@ int View::mainMenu()
 
 		int size;
 		do {
-			size = readSize();
+			size = readNumber();
 		} while (size < MIN_MAZE_SIZE || size > MAX_MAZE_SIZE);
 
 		return size;
 	}
 }
 
-int View::readSize()
+int View::getWallPerc()
+{
+	std::cout << "Podaj szanse na wystapienie sciany w procentach:" << std::endl;
+	do {
+		wallPerc = readNumber();
+	} while (wallPerc < 0 || wallPerc > 100);
+
+	return wallPerc;
+}
+
+int View::readNumber()
 {
 	int size;
 	std::cin.clear();

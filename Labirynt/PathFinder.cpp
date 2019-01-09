@@ -112,6 +112,7 @@ bool PathFinder::findPath(Grid & maze)
 		pathVector.push_back(tempPath);
 		pathCounter++;
 	}
+	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 	return false;
 }
 
