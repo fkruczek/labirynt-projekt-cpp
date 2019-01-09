@@ -36,8 +36,8 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 	}
 
 	setMazeSize(Maze.getSize());
-	int sizeOfSquare = windowSize / mazeSize;
-	windowSize = sizeOfSquare * mazeSize;
+	int sqSize = windowSize / mazeSize;
+	windowSize = sqSize * mazeSize;
 	display = al_create_display(windowSize, windowSize);
 	if (!display) {
 		throw "nie udalo sie utworzyc display";
@@ -49,8 +49,17 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 		throw "nie udalo sie utworzyc event_queue";
 	}
 
-	al_register_event_source(event_queue, al_get_display_event_source(display));
+	if (!al_install_mouse()) {
+		throw "nie udalo sie zaistalowac myszy";
+	}	
+	
+	if (!al_install_keyboard()) {
+		throw "nie udalo sie zainstalowac klawiatury";
+	}
 
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+	al_register_event_source(event_queue, al_get_mouse_event_source());
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_set_window_title(display, "Labirynt - projekt C++");
 
 	ALLEGRO_COLOR color_wall = al_map_rgb(0, 42, 63);
@@ -60,51 +69,110 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 	ALLEGRO_COLOR color_enter = al_map_rgb(30, 14, 220);
 	ALLEGRO_COLOR color_exit = al_map_rgb(220, 70, 50);
 
+
+	int clickedRow, clickedCol;
+
 	bool done = false;
+	bool fieldSet = false;
 	while (!done)
 	{
 		ALLEGRO_EVENT ev;
 		ALLEGRO_TIMEOUT timeout;
 
-
 		for (int row = 0; row < mazeSize; row++) {
 			for (int col = 0; col < mazeSize; col++) {
-				switch (Maze.getField(col, row)) {
+				switch (Maze.getField(row,col)) {
 				case '0':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_wall);
+					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_wall);
 					break;
 				case '1':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_ground);
-					break;
-				case '2':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_path);
-					break;
-				case '3':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_finalpath);
+					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_ground);
 					break;
 				case 'S':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_enter);
+					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_enter);
 					break;
 				case 'K':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_exit);
+					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_exit);
 					break;
 				}
 			}
 		}
-
 		al_flip_display();
-		//w tym momencie jezeli enter to dalej, jezeli naklikane to zmieniaj wartosci pol w labiryncie
-		//jezeli nacisniete na wyjscie/wejscie to nastepny polozony to bedzie wyjscie/wejscie
-		//jezeli enter to szukaj sciezki
-		al_rest(1);
 
+		al_init_timeout(&timeout, 0.2);
+		bool ready = false;
+		while (!ready) {
+			bool get_event = al_wait_for_event_until(event_queue, &ev, &timeout);
+			if (get_event && ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+				clickedRow = ev.mouse.x / sqSize;
+				clickedCol = ev.mouse.y / sqSize;
+				switch (Maze.getField(clickedRow, clickedCol)) {
+				case '0':
+					al_draw_filled_rectangle(clickedRow*sqSize, clickedCol*sqSize, clickedRow*sqSize + sqSize, clickedCol*sqSize + sqSize, color_ground);
+					Maze.setField(clickedRow, clickedCol,  '1');
+					break;
+				case '1':
+					al_draw_filled_rectangle(clickedRow*sqSize, clickedCol*sqSize, clickedRow*sqSize + sqSize, clickedCol*sqSize + sqSize, color_wall);
+					Maze.setField(clickedRow, clickedCol,  '0');
+					break;
+				case 'S':
+					std::cout << "Umiesc na mapie punkt startowy!" << std::endl;
+					al_draw_filled_rectangle(clickedRow*sqSize, clickedCol*sqSize, clickedRow*sqSize + sqSize, clickedCol*sqSize + sqSize, color_ground);
+					Maze.setField(clickedRow, clickedCol, '1');
+					al_flip_display();
+					while (!fieldSet) {
+						al_wait_for_event(event_queue, &ev);
+						if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+							clickedRow = ev.mouse.x / sqSize;
+							clickedCol = ev.mouse.y / sqSize;
+							if (Maze.getField(clickedRow, clickedCol) == 'K') continue;
+							Maze.setField(clickedRow, clickedCol, 'S');
+							al_draw_filled_rectangle(clickedRow*sqSize, clickedCol*sqSize, clickedRow*sqSize + sqSize, clickedCol*sqSize + sqSize, color_enter);
+							fieldSet = true;
+						}
+					}
+					fieldSet = false;
+					break;
+				case 'K':
+					std::cout << "Umiesc na mapie punkt koncowy!" << std::endl;
+					al_draw_filled_rectangle(clickedRow*sqSize, clickedCol*sqSize, clickedRow*sqSize + sqSize, clickedCol*sqSize + sqSize, color_ground);
+					Maze.setField(clickedRow, clickedCol, '1');
+					al_flip_display();
+					while (!fieldSet) {
+						al_wait_for_event(event_queue, &ev);
+						if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+							clickedRow = ev.mouse.x / sqSize;
+							clickedCol = ev.mouse.y / sqSize;
+							if (Maze.getField(clickedRow, clickedCol) == 'S') continue;
+							Maze.setField(clickedRow, clickedCol, 'K');
+							al_draw_filled_rectangle(clickedRow*sqSize, clickedCol*sqSize, clickedRow*sqSize + sqSize, clickedCol*sqSize + sqSize, color_exit);
+							fieldSet = true;
+						}
+					}
+					fieldSet = false;
+					break;
+				}
+				al_flip_display();
+			}
+			else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+				ready = true;
+			}
+			else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+				done = true;
+				break;
+			}
+		}
+		if (done) break;
+
+		std::cout << "Szukam sciezki..." << std::endl;
 		if (!Finder.findPath(Maze)) {
 			std::cout << "Nie znaleziono sciezki" << std::endl;
 		}
 		else {
 			std::cout << "Znaleziono sciezke" << std::endl;
 		}
-		std::cout << "Czas szukania " << Finder.getDuration() << "s." << std::endl;
+		std::cout << "Czas szukania wyniosl " << Finder.getDuration() << "s." << std::endl;
+
 
 		double restTime = 1.0 / (mazeSize);
 		al_init_timeout(&timeout, restTime);
@@ -114,24 +182,24 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 			Finder.selectVectorPath(Maze, nPath);
 			for (int row = 0; row < mazeSize; row++) {
 				for (int col = 0; col < mazeSize; col++) {
-					switch (Maze.getField(col, row)) {
+					switch (Maze.getField(row, col)) {
 					case '0':
-						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_wall);
+						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_wall);
 						break;
 					case '1':
-						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_ground);
+						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_ground);
 						break;
 					case '2':
-						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_path);
+						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_path);
 						break;
 					case '3':
-						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_finalpath);
+						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_finalpath);
 						break;
 					case 'S':
-						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_enter);
+						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_enter);
 						break;
 					case 'K':
-						al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_exit);
+						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_exit);
 						break;
 					}
 				}
@@ -152,24 +220,24 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 
 		for (int row = 0; row < mazeSize; row++) {
 			for (int col = 0; col < mazeSize; col++) {
-				switch (Maze.getField(col, row)) {
+				switch (Maze.getField(row, col)) {
 				case '0':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_wall);
+					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_wall);
 					break;
 				case '1':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_ground);
+					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_ground);
 					break;
 				case '2':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_path);
+					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_path);
 					break;
 				case '3':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_finalpath);
+					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_finalpath);
 					break;
 				case 'S':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_enter);
+					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_enter);
 					break;
 				case 'K':
-					al_draw_filled_rectangle(row*sizeOfSquare, col*sizeOfSquare, row*sizeOfSquare + sizeOfSquare, col*sizeOfSquare + sizeOfSquare, color_exit);
+					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_exit);
 					break;
 				}
 			}

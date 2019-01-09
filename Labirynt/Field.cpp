@@ -39,7 +39,7 @@ int Field::getY()
 	return Y;
 }
 
-int Field::getDistance()
+double Field::getDistance()
 {
 	return distance;
 }

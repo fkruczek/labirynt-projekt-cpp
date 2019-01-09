@@ -8,7 +8,7 @@ private:
 	int Y;
 	bool isVisited = false;
 	bool isWalkable = false;
-	int distance;
+	double distance;
 public:
 	Field();
 	Field(int x, int y, int exPntX, int exPntY);
@@ -17,7 +17,7 @@ public:
 	void setY(int y);
 	int getX();
 	int getY();
-	int getDistance();
+	double getDistance();
 	void setDistance();
 };
 

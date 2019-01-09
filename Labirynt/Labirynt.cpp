@@ -21,13 +21,11 @@ int main(int argc, char **argv) {
 			Reader.readFromFile();
 			Grid Maze(Reader.getFileContent());
 			pathFinder.setMazeSize(Maze.getSize());
-			std::cout << "Szukam sciezki w labiryncie z pliku..." << std::endl;
 			V.drawMaze(Maze, pathFinder);
 		}
 		else {//losowanie labiryntu
 			Grid Maze(choice, V.getWallPerc());
 			pathFinder.setMazeSize(Maze.getSize());
-			std::cout << "Szukam sciezki w losowym labiryncie..." << std::endl;
 			V.drawMaze(Maze, pathFinder);
 		}
 	}
