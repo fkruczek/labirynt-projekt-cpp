@@ -1,5 +1,3 @@
-﻿  Labirynt.cpp
-  PathFinder.cpp
-  View.cpp
-  Generating Code...
+﻿  Field.cpp
+c:\users\fryderyk\projects\labirynt\labirynt\field.cpp(14): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   Labirynt.vcxproj -> C:\Users\Fryderyk\Projects\labirynt\Labirynt\Debug\Labirynt.exe

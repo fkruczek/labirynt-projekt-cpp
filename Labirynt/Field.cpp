@@ -9,8 +9,9 @@ Field::Field(int x, int y, int exPntX, int exPntY)
 {
 	X = x;
 	Y = y;
-
-	distance = abs(x - exPntX)*abs(y - exPntY);
+	x = abs(x - exPntX);
+	y = abs(y - exPntY);
+	distance = sqrt(x*x + y*y);
 }
 
 
