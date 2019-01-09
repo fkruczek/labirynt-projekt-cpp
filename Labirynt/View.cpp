@@ -175,37 +175,46 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 
 		double restTime = 1.0 / (mazeSize);
 
-		for (int nPath = 0; nPath < Finder.getPathCounter(); nPath++) {
-			Finder.selectVectorPath(Maze, nPath);
-			for (int row = 0; row < mazeSize; row++) {
-				for (int col = 0; col < mazeSize; col++) {
-					switch (Maze.getField(row, col)) {
-					case '0':
-						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_wall);
-						break;
-					case '1':
-						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_ground);
-						break;
-					case '2':
-						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_path);
-						break;
-					case '3':
-						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_finalpath);
-						break;
-					case 'S':
-						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_enter);
-						break;
-					case 'K':
-						al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_exit);
+		ALLEGRO_EVENT ev2;
+		al_flush_event_queue(event_queue);
+		al_unregister_event_source(event_queue, al_get_mouse_event_source());
+
+		for (int nPath = 0; nPath < Finder.getPathCounter() && !done; nPath++) {
+					Finder.selectVectorPath(Maze, nPath);
+					for (int row = 0; row < mazeSize; row++) {
+						for (int col = 0; col < mazeSize; col++) {
+							switch (Maze.getField(row, col)) {
+							case '0':
+								al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_wall);
+								break;
+							case '1':
+								al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_ground);
+								break;
+							case '2':
+								al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_path);
+								break;
+							case '3':
+								al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_finalpath);
+								break;
+							case 'S':
+								al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_enter);
+								break;
+							case 'K':
+								al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_exit);
+								break;
+							}
+						}
+					}
+					al_flip_display();
+					while (true) {
+						al_wait_for_event_timed(event_queue, &ev2, 2*restTime);
+						if (ev2.type == 42)
+								done = true;
 						break;
 					}
+					al_rest(restTime);
 				}
-			}
-			al_rest(restTime);
-			al_flip_display();
-		}
 
-		if (done) break;
 
 		Finder.selectFinalPath(Maze);
 
