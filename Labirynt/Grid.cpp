@@ -29,7 +29,7 @@ Grid::Grid(int size, int wallPerc) //labirynt losowany
 	do {
 		randnum3 = rand() % gridSize;
 		randnum4 = rand() % gridSize;
-	} while (randnum3 == randnum1 && randnum4 == randnum1);
+	} while (randnum3 == randnum1 && randnum4 == randnum2);
 
 	setField(randnum3, randnum4, 'K');  //wyjscie z labiryntu
 
