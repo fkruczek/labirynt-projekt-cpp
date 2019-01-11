@@ -1,11 +1,4 @@
-﻿  Field.cpp
-c:\users\fryderyk\projects\labirynt\labirynt\field.cpp(14): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-  FileReader.cpp
-  Grid.cpp
+﻿  Grid.cpp
 c:\users\fryderyk\projects\labirynt\labirynt\grid.cpp(10): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  Labirynt.cpp
-  PathFinder.cpp
-  View.cpp
-  Generating Code...
-  LINK : C:\Users\Fryderyk\Projects\labirynt\Labirynt\Debug\Labirynt.exe not found or not built by the last incremental link; performing full link
+c:\users\fryderyk\projects\labirynt\labirynt\grid.cpp(205): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Labirynt.vcxproj -> C:\Users\Fryderyk\Projects\labirynt\Labirynt\Debug\Labirynt.exe

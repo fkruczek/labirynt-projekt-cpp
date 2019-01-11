@@ -20,16 +20,18 @@ Grid::Grid(int size, int wallPerc) //labirynt losowany
 		}
 	}
 
+	if (wallPerc == 100) generateMaze();
+
 	randnum1 = rand() % gridSize;
 	randnum2 = rand() % gridSize;
 
-	grid[randnum1][randnum2] = 'S'; //wejscie do labiryntu
+	setField(randnum1, randnum2, 'S'); //wejscie do labiryntu
 	do {
 		randnum3 = rand() % gridSize;
 		randnum4 = rand() % gridSize;
 	} while (randnum3 == randnum1 && randnum4 == randnum1);
 
-	grid[randnum3][randnum4] = 'K'; //wyjscie z labiryntu
+	setField(randnum3, randnum4, 'K');  //wyjscie z labiryntu
 
 
 }
@@ -196,12 +198,72 @@ int Grid::getExitPointY()
 	}
 	return 0;
 }
-void Grid::exportPrimaryGrid()
+
+void Grid::generateMaze()
 {
+	std::vector<std::pair<int, int>> fieldVector;
+	srand(time(NULL));
+	std::pair<int, int> field(0,0), newField;
+	int explRow, explCol, randIndex;
+
+	fieldVector.push_back(field);
+
+	while (!fieldVector.empty()) {
+		randIndex = rand() % fieldVector.size();
+		field = fieldVector.at(randIndex);
+		explRow = field.first;
+		explCol = field.second;
+		setField(explRow, explCol, '1');
+		fieldVector.erase(fieldVector.begin() + randIndex);
+		for (int i = 0; i < 4; i++) {
+			explRow += rowVect[i];
+			explCol += colVect[i];
+
+			if (explRow >= gridSize ||
+				explRow < 0 ||
+				explCol >= gridSize ||
+				explCol < 0 ||
+				countWalkableNbrs(explRow, explCol) > 1) {
+				continue;
+			}
+
+			if (getField(explRow, explCol) == '1') continue;
+
+			newField.first = explRow;
+			newField.second = explCol;
+
+			fieldVector.insert(fieldVector.begin(), newField);
+		}
+
+	}
+	fieldVector.clear();
 }
-void Grid::importPrimaryGrid()
+
+
+
+int Grid::countWalkableNbrs(int row, int col)
 {
+	int explRow, explCol, walkableNbrs = 0;
+
+	for (int i = 0; i < 4; i++) {
+		explRow = row + rowVect[i];
+		explCol = col + colVect[i];
+
+		if (explRow >= gridSize ||
+			explRow < 0 ||
+			explCol >= gridSize ||
+			explCol < 0) continue;
+
+		if ('1' == getField(explRow, explCol)) walkableNbrs++;
+	}
+
+	return walkableNbrs;
 }
+
+
+
+
+
 void Grid::setVisited(int x, int y, bool state)
 {
 	visited[x][y] = state;

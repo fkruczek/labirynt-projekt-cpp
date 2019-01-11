@@ -6,6 +6,8 @@
 #include <string>
 #include <algorithm>
 #include <ctime>
+#include <vector>
+#include <time.h>
 
 #define MIN_MAZE_SIZE 2
 #define MAX_MAZE_SIZE 150
@@ -37,13 +39,19 @@ public:
 	int getExitPointX();
 	int getExitPointY();
 
-	void exportPrimaryGrid();
-	void importPrimaryGrid();
+	int countWalkableNbrs(int row, int col);
+	
+	void generateMaze();
 
 	void setVisited(int x, int y, bool state);
 	bool isVisited(int x, int y);
 
 	bool isWalkable(int x, int y);
 	bool isExitPoint(int x, int y);
+
+	int rowVect[4] = { -1, 1, 1, -1 };
+	int colVect[4] = { 0, 1, -1, -1 };
+
+
 };
 #endif
