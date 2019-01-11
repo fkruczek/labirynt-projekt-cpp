@@ -204,16 +204,22 @@ void Grid::generateMaze()
 	std::vector<std::pair<int, int>> fieldVector;
 	srand(time(NULL));
 	std::pair<int, int> field(0,0), newField;
-	int explRow, explCol, randIndex;
+	int explRow, explCol, randIndex, iterator = 0;
 
 	fieldVector.push_back(field);
 	setField(0, 0, '1');
 	while (!fieldVector.empty()) {
-		randIndex = rand() % fieldVector.size();
-		field = fieldVector.at(randIndex);
+		if (iterator % 3 == 0) {
+			randIndex = rand() % fieldVector.size();
+			field = fieldVector.at(randIndex);
+			fieldVector.erase(fieldVector.begin() + randIndex);
+		}
+		else {
+			field = fieldVector.back();
+			fieldVector.pop_back();
+		}
 		explRow = field.first;
 		explCol = field.second;
-		fieldVector.erase(fieldVector.begin() + randIndex);
 		if (countWalkableNbrs(explRow, explCol) > 1) continue;
 		setField(explRow, explCol, '1');
 		for (int i = 0; i < 4; i++) {
@@ -236,7 +242,7 @@ void Grid::generateMaze()
 			fieldVector.push_back(newField);
 		}
 
-
+		iterator++;
 	}
 	fieldVector.clear();
 }
