@@ -40,7 +40,8 @@ public:
 	int getExitPointY();
 
 	int countWalkableNbrs(int row, int col);
-	
+	bool hasDiagonalNbrs(int row, int col);
+
 	void generateMaze();
 
 	void setVisited(int x, int y, bool state);
@@ -51,6 +52,8 @@ public:
 
 	int rowVect[4] = { -1, 1, 1, -1 };
 	int colVect[4] = { 0, 1, -1, -1 };
+	int rowDiagVect[4] = { 1, 0, -2, 0 };
+	int colDiagVect[4] = { 1, -2, 0, 2 };
 
 
 };

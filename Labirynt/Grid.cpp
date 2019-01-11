@@ -207,14 +207,15 @@ void Grid::generateMaze()
 	int explRow, explCol, randIndex;
 
 	fieldVector.push_back(field);
-
+	setField(0, 0, '1');
 	while (!fieldVector.empty()) {
 		randIndex = rand() % fieldVector.size();
 		field = fieldVector.at(randIndex);
 		explRow = field.first;
 		explCol = field.second;
-		setField(explRow, explCol, '1');
 		fieldVector.erase(fieldVector.begin() + randIndex);
+		if (countWalkableNbrs(explRow, explCol) > 1) continue;
+		setField(explRow, explCol, '1');
 		for (int i = 0; i < 4; i++) {
 			explRow += rowVect[i];
 			explCol += colVect[i];
@@ -232,8 +233,9 @@ void Grid::generateMaze()
 			newField.first = explRow;
 			newField.second = explCol;
 
-			fieldVector.insert(fieldVector.begin(), newField);
+			fieldVector.push_back(newField);
 		}
+
 
 	}
 	fieldVector.clear();
@@ -243,11 +245,11 @@ void Grid::generateMaze()
 
 int Grid::countWalkableNbrs(int row, int col)
 {
-	int explRow, explCol, walkableNbrs = 0;
+	int explRow=row, explCol=col, walkableNbrs = 0;
 
 	for (int i = 0; i < 4; i++) {
-		explRow = row + rowVect[i];
-		explCol = col + colVect[i];
+		explRow += rowVect[i];
+		explCol += colVect[i];
 
 		if (explRow >= gridSize ||
 			explRow < 0 ||
@@ -258,6 +260,24 @@ int Grid::countWalkableNbrs(int row, int col)
 	}
 
 	return walkableNbrs;
+}
+
+bool Grid::hasDiagonalNbrs(int row, int col)
+{
+	int explRow = row, explCol = col;
+
+	for (int i = 0; i < 4; i++) {
+		explRow += rowDiagVect[i];
+		explCol += colDiagVect[i];
+
+		if (explRow >= gridSize ||
+			explRow < 0 ||
+			explCol >= gridSize ||
+			explCol < 0) continue;
+
+		if ('0' == getField(explRow, explCol)) return true;
+	}
+	return false;
 }
 
 
