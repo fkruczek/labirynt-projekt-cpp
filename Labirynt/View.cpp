@@ -173,7 +173,7 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 		}
 		std::cout << "Czas szukania wyniosl " << Finder.getDuration() << "s." << std::endl;
 
-		double restTime = 1.0 / (mazeSize);
+		double restTime = 5.0 / (mazeSize);
 
 		ALLEGRO_EVENT ev2;
 		al_flush_event_queue(event_queue);
@@ -207,12 +207,11 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 					}
 					al_flip_display();
 					while (true) {
-						al_wait_for_event_timed(event_queue, &ev2, 2*restTime);
+						al_wait_for_event_timed(event_queue, &ev2, restTime);
 						if (ev2.type == 42)
 								done = true;
 						break;
 					}
-					al_rest(restTime);
 				}
 
 

@@ -1,4 +1,2 @@
-﻿  Grid.cpp
-c:\users\fryderyk\projects\labirynt\labirynt\grid.cpp(10): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\fryderyk\projects\labirynt\labirynt\grid.cpp(205): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+﻿  View.cpp
   Labirynt.vcxproj -> C:\Users\Fryderyk\Projects\labirynt\Labirynt\Debug\Labirynt.exe
