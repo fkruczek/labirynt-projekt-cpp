@@ -32,8 +32,7 @@ Grid::Grid(int size, int wallPerc) //labirynt losowany
 	} while (randnum3 == randnum1 && randnum4 == randnum2);
 
 	setField(randnum3, randnum4, 'K');  //wyjscie z labiryntu
-
-
+	savePrimaryGrid();
 }
 
 Grid::Grid(std::string fileContent) //labirynt z pliku
@@ -50,6 +49,7 @@ Grid::Grid(std::string fileContent) //labirynt z pliku
 				grid[row][col] = fileContentNoWhiteSpaces[i++];
 			}
 		}
+		savePrimaryGrid();
 }
 
 std::string Grid::deleteWhiteSpaces(std::string str) {
@@ -117,6 +117,10 @@ void Grid::allocGrid(int size)
 	for (int i = 0; i < size; ++i)
 		grid[i] = new char[size];
 
+	primaryGrid = new char*[size];
+	for (int i = 0; i < size; ++i)
+		primaryGrid[i] = new char[size];
+
 	visited = new bool*[size];
 	for (int i = 0; i < size; ++i) {
 		visited[i] = new bool[size];
@@ -125,13 +129,6 @@ void Grid::allocGrid(int size)
 		}
 	}
 
-
-
-
-/*
-	grid2 = new Field*[size];
-	for (int i = 0; i < size; ++i)
-		grid2[i] = new Field[size]; */
 }
 
 int Grid::randomizeSize()
@@ -313,4 +310,23 @@ bool Grid::isExitPoint(int x, int y)
 	if (grid[x][y] == 'K')
 		return true;
 	else return false;
+}
+
+void Grid::savePrimaryGrid()
+{
+	for (int row = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			primaryGrid[row][col] = grid[row][col];
+		}
+	}
+}
+
+void Grid::readPrimaryGrid()
+{
+	for (int row = 0; row < gridSize; row++) {
+		for (int col = 0; col < gridSize; col++) {
+			grid[row][col] = primaryGrid[row][col];
+			visited[row][col] = false;
+		}
+	}
 }

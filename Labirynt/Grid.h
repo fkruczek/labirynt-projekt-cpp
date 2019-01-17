@@ -50,6 +50,9 @@ public:
 	bool isWalkable(int x, int y);
 	bool isExitPoint(int x, int y);
 
+	void savePrimaryGrid();
+	void readPrimaryGrid();
+
 	int rowVect[4] = { -1, 1, 1, -1 };
 	int colVect[4] = { 0, 1, -1, -1 };
 	int rowDiagVect[4] = { 1, 0, -2, 0 };

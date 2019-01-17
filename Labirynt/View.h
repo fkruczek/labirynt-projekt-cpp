@@ -24,7 +24,7 @@ public:
 	void setMazeSize(int gridSize);
 	void setWindowSize(int sizeWindow);
 	int readNumber();
-	void drawMaze(Grid & Maze, PathFinder & Finder);
+	void drawMaze(Grid & Maze);
 	int mainMenu();
 	int getWallPerc();
 };

@@ -13,20 +13,20 @@ int main(int argc, char **argv) {
 	while (true) {
 	clearScreen();
 	View V;
-	PathFinder pathFinder;
+	//PathFinder pathFinder;
 	choice = V.mainMenu();
 	try {
 		if (choice == 1) {//labirynt z plikua
 			FileReader Reader;
 			Reader.readFromFile();
 			Grid Maze(Reader.getFileContent());
-			pathFinder.setMazeSize(Maze.getSize());
-			V.drawMaze(Maze, pathFinder);
+			//pathFinder.setMazeSize(Maze.getSize());
+			V.drawMaze(Maze);
 		}
 		else {//losowanie labiryntu
 			Grid Maze(choice, V.getWallPerc());
-			pathFinder.setMazeSize(Maze.getSize());
-			V.drawMaze(Maze, pathFinder);
+			//pathFinder.setMazeSize(Maze.getSize());
+			V.drawMaze(Maze);
 		}
 	}
 	catch (const char *error) {

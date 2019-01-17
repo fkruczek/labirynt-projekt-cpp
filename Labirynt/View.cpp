@@ -25,7 +25,7 @@ void View::setWindowSize(int sizeWindow)
 
 
 
-void View::drawMaze(Grid & Maze, PathFinder & Finder)
+void View::drawMaze(Grid & Maze)
 {
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
 
@@ -58,7 +58,6 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 	}
 
 	al_register_event_source(event_queue, al_get_display_event_source(display));
-	al_register_event_source(event_queue, al_get_mouse_event_source());
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_set_window_title(display, "Labirynt - projekt C++");
 
@@ -69,15 +68,21 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 	ALLEGRO_COLOR color_enter = al_map_rgb(30, 14, 220);
 	ALLEGRO_COLOR color_exit = al_map_rgb(220, 70, 50);
 
+	ALLEGRO_KEYBOARD_STATE keyboard;
 
 	int clickedRow, clickedCol;
 
 	bool done = false;
+	bool ready = false;
+	bool cont;
 	bool fieldSet = false;
 	while (!done)
 	{
 		ALLEGRO_EVENT ev;
 		ALLEGRO_TIMEOUT timeout;
+		cont = done = ready = false;
+
+		Maze.readPrimaryGrid();
 
 		for (int row = 0; row < mazeSize; row++) {
 			for (int col = 0; col < mazeSize; col++) {
@@ -98,10 +103,13 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 			}
 		}
 		al_flip_display();
-
-		al_init_timeout(&timeout, 0.2);
-		bool ready = false;
+		al_flush_event_queue(event_queue);
+		std::cout << "Edytuj labirynt lub nacisnij ENTER zeby rozpoczac szukanie drogi" << std::endl;
+		al_register_event_source(event_queue, al_get_mouse_event_source());
+		al_init_timeout(&timeout, 0.1);
+		al_flush_event_queue(event_queue);
 		while (!ready) {
+			al_get_keyboard_state(&keyboard);
 			bool get_event = al_wait_for_event_until(event_queue, &ev, &timeout);
 			if (get_event && ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 				clickedRow = ev.mouse.x / sqSize;
@@ -154,7 +162,8 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 				}
 				al_flip_display();
 			}
-			else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+			else if (al_key_down(&keyboard, ALLEGRO_KEY_ENTER)) {
+				al_flush_event_queue(event_queue);
 				ready = true;
 			}
 			else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -164,6 +173,13 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 		}
 		if (done) break;
 
+		al_unregister_event_source(event_queue, al_get_mouse_event_source());
+		al_flush_event_queue(event_queue);
+		Maze.savePrimaryGrid();
+
+		PathFinder Finder;
+		Finder.setMazeSize(Maze.getSize());
+
 		std::cout << "Szukam sciezki..." << std::endl;
 		if (!Finder.findPath(Maze)) {
 			std::cout << "Nie znaleziono sciezki" << std::endl;
@@ -172,13 +188,16 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 			std::cout << "Znaleziono sciezke" << std::endl;
 		}
 		std::cout << "Czas szukania wyniosl " << Finder.getDuration() << "s." << std::endl;
+		std::cout << "Nacisnij dowolny klawisz by pominac wizualizacje..."<< std::endl;
 
-		double restTime = 5.0 / (mazeSize);
+		double restTime = 5.0 / (mazeSize*mazeSize);
 
-		ALLEGRO_EVENT ev2;
 		al_flush_event_queue(event_queue);
-		al_unregister_event_source(event_queue, al_get_mouse_event_source());
+		ALLEGRO_EVENT ev2;
 
+		al_init_timeout(&timeout, restTime);
+
+		done = false;
 		for (int nPath = 0; nPath < Finder.getPathCounter() && !done; nPath++) {
 					Finder.selectVectorPath(Maze, nPath);
 					for (int row = 0; row < mazeSize; row++) {
@@ -207,18 +226,17 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 					}
 					al_flip_display();
 					while (true) {
-						al_wait_for_event_timed(event_queue, &ev2, restTime);
-						if (ev2.type == 42)
-								done = true;
-						break;
+						//al_wait_for_event_timed(event_queue, &ev2, restTime);
+						bool get_event = al_wait_for_event_until(event_queue, &ev2, &timeout);
+						if (get_event && (ev2.type == 42 || ev2.type == 11))
+							done = true;
+							break;
 					}
 				}
-
-
+		al_flush_event_queue(event_queue);
 		Finder.selectFinalPath(Maze);
 
 		for (int row = 0; row < mazeSize; row++) {
-
 			for (int col = 0; col < mazeSize; col++) {
 				switch (Maze.getField(row, col)) {
 				case '0':
@@ -242,17 +260,29 @@ void View::drawMaze(Grid & Maze, PathFinder & Finder)
 				}
 			}
 		}
-		al_flip_display();
-		
 
+		al_flip_display();
+		std::cout << "Nacisnij BACKSPACE by edytowac labirynt..." << std::endl;
+		al_flush_event_queue(event_queue);
+		al_rest(0.5);
+		ALLEGRO_EVENT ev3;
+		al_get_keyboard_state(&keyboard);
 		while (true) {
-			al_wait_for_event(event_queue, &ev);
-			if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			bool get_event = al_wait_for_event_until(event_queue, &ev3, &timeout);
+			if (get_event && ev3.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 				done = true;
 				break;
 			}
+			al_get_keyboard_state(&keyboard);
+			if (al_key_down(&keyboard, ALLEGRO_KEY_BACKSPACE)) {
+				done = false;
+				cont = true;
+				break;
+			}
 		}
+		al_flush_event_queue(event_queue);
 		if (done) break;
+		else if (cont) continue;
 
 	}
 	al_destroy_display(display);
@@ -292,7 +322,8 @@ int View::mainMenu()
 
 int View::getWallPerc()
 {
-	std::cout << "Podaj szanse na wystapienie sciany w procentach:" << std::endl;
+	std::cout << "Podaj szanse na wystapienie sciany <0 do 99>" << std::endl;
+	std::cout << "<100> by wygenerowac labirynt" << std::endl;
 	do {
 		wallPerc = readNumber();
 	} while (wallPerc < 0 || wallPerc > 100);
