@@ -46,7 +46,7 @@ Grid::Grid(std::string fileContent) //labirynt z pliku
 		//string -> grid
 		for (int row = 0, i = 0; row < gridSize; row++) {
 			for (int col = 0; col < gridSize; col++) {
-				grid[row][col] = fileContentNoWhiteSpaces[i++];
+				grid[col][row] = fileContentNoWhiteSpaces[i++];
 			}
 		}
 		savePrimaryGrid();
