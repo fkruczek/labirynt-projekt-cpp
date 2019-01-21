@@ -2,7 +2,10 @@
 #ifndef FILEREADER_H
 #define FILEREADER_H
 #include <fstream>
-
+//!  klasa FileReader
+/*!
+  Klasa zczytuj¹ca dane z pliku
+*/
 class FileReader
 {
 private:
@@ -11,7 +14,9 @@ private:
 public:
 	FileReader();
 	~FileReader();
+	//! Zwraca true je¿eli uda siê odczytaæ dane z pliku
 	bool readFromFile();
+	//! Zwraca strumien odczytany z pliku
 	std::string getFileContent();
 };
 

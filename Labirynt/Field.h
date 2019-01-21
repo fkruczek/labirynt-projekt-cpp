@@ -1,6 +1,9 @@
 #ifndef FIELD_H
 #define FIELD_H
-
+//!  klasa Field
+/*!
+  Klasa reprezentuj¹ca pole w labiryncie
+*/
 class Field
 {
 private:
@@ -8,6 +11,7 @@ private:
 	int Y;
 	bool isVisited = false;
 	bool isWalkable = false;
+	//! Dystans pola do punktu wyjscia
 	int distance;
 public:
 	Field();

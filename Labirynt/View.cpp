@@ -86,7 +86,7 @@ void View::drawMaze(Grid & Maze)
 
 		for (int row = 0; row < mazeSize; row++) {
 			for (int col = 0; col < mazeSize; col++) {
-				switch (Maze.getField(row,col)) {
+				switch (Maze.getField(row, col)) {
 				case '0':
 					al_draw_filled_rectangle(row*sqSize, col*sqSize, row*sqSize + sqSize, col*sqSize + sqSize, color_wall);
 					break;
@@ -117,11 +117,11 @@ void View::drawMaze(Grid & Maze)
 				switch (Maze.getField(clickedRow, clickedCol)) {
 				case '0':
 					al_draw_filled_rectangle(clickedRow*sqSize, clickedCol*sqSize, clickedRow*sqSize + sqSize, clickedCol*sqSize + sqSize, color_ground);
-					Maze.setField(clickedRow, clickedCol,  '1');
+					Maze.setField(clickedRow, clickedCol, '1');
 					break;
 				case '1':
 					al_draw_filled_rectangle(clickedRow*sqSize, clickedCol*sqSize, clickedRow*sqSize + sqSize, clickedCol*sqSize + sqSize, color_wall);
-					Maze.setField(clickedRow, clickedCol,  '0');
+					Maze.setField(clickedRow, clickedCol, '0');
 					break;
 				case 'S':
 					std::cout << "Umiesc na mapie punkt startowy!" << std::endl;

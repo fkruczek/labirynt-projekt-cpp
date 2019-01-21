@@ -29,6 +29,7 @@ bool PathFinder::findPath(Grid & maze)
 
 	while (!paths.empty()) {
 		std::stack<Field> tempPath = paths.top();
+		//std::stack<Field> tempPath = paths.front();
 		paths.pop();
 		Field endOfPath = tempPath.top();
 
@@ -121,9 +122,6 @@ void PathFinder::setMazeSize(int size)
 	mazeSize = size;
 }
 
-void PathFinder::checkNeighbours(Field & field)
-{
-}
 
 bool PathFinder::isInBorder(Field & field)
 {
